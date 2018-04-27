@@ -1,0 +1,195 @@
+
+#include "Robot.hh"
+#include "Scieszka.hh"
+#include "lacze_do_gnuplota.hh"
+
+#include <iostream>
+#include <string>
+#include <math.h>
+#include <unistd.h>
+
+
+void Robot::Inicjalizuj()
+{
+  Sciesz.InicjalizujKsztalt(_PolozenieObiektu);
+
+  InicjalizujKsztalt();
+  
+}
+
+void Robot::InicjalizujKsztalt()
+{
+  _TabWierz_wzorzec.push_back({ 0 ,  45});
+  _TabWierz_wzorzec.push_back({ 0 ,  0 });
+  _TabWierz_wzorzec.push_back({ 0 ,  20});
+  _TabWierz_wzorzec.push_back({ 20,  20});
+  _TabWierz_wzorzec.push_back({ 20, -20});
+  _TabWierz_wzorzec.push_back({-20, -20});
+  _TabWierz_wzorzec.push_back({-20,  20});
+  _TabWierz_wzorzec.push_back({  0,  20});
+  _TabWierz = _TabWierz_wzorzec;
+  
+  /* _TabWierz[1][0] =  30;  _TabWierz[1][1]=   0;
+  _TabWierz[2][0] =   0;  _TabWierz[2][1]= -30;
+  _TabWierz[3][0] = -30;  _TabWierz[3][1]= -30;
+  _TabWierz[4][0] = -30;  _TabWierz[4][1]=  30;
+  _TabWierz[5][0] =   0;  _TabWierz[5][1]=  30;
+  _TabWierz[6][0] =  30;  _TabWierz[6][1]=   0;*/
+}
+
+/*!
+ *  Zmiania współrzędne położenia punktu, względem którego tworzony
+ *  jest obrys obiektu.
+ *  \param[in] x - współrzędna x-owa nowego położenia.
+ *  \param[in] y - współrzędna y-owa nowego położenia.
+ */
+void Robot::ZmienPolozenie(double x, double y)
+{
+  _PolozenieObiektu[0] = x;
+  _PolozenieObiektu[1] = y;
+  Sciesz.dodaj(_PolozenieObiektu);
+}
+
+void Robot::ZmienPolozenie(Wektor2D W)
+{
+  _PolozenieObiektu = W;
+  Sciesz.dodaj(_PolozenieObiektu);
+}
+
+void Robot::Obrot()
+{
+  _TabWierz = _TabWierz_wzorzec;
+  for (Wektor2D& W_lok : _TabWierz)
+    {
+      W_lok.Obrot(kat);
+    }
+  
+} 
+
+
+void Robot::Obrot(double a)
+{
+  _TabWierz = _TabWierz_wzorzec;
+  kat = kat+a;
+  for (Wektor2D& W_lok : _TabWierz)
+    {
+      W_lok.Obrot(kat);
+      //std::cout << a << " " << W_lok[0] << "  " << W_lok[1] << std::endl;
+    }
+  
+} 
+
+
+void Robot::Obrot(Wektor2D W)
+{
+  double a = (*this).KatObrotu(W);
+  //    std::cout << a << " "  << std::endl;
+  (*this).Obrot(a);
+
+} 
+
+
+double Robot::KatObrotu(Wektor2D W)
+{
+  Wektor2D Zero(1, 0);
+  Wektor2D pom(0, 0);
+  double a = 0;
+  pom = W;
+  a = Zero.Kat(pom);
+  ///std::cout << "kat " << a << std::endl;
+ 
+  return a;
+}
+
+Wektor2D Robot::KrokRuchu()
+{
+
+  Wektor2D W(0,1);
+  W.Obrot(kat);
+  return W;
+}
+
+
+void Robot::Move()
+{
+  ZmienPolozenie(_PolozenieObiektu);
+}
+
+void Robot::Move(double a)
+{
+  ZmienPolozenie(KrokRuchu()*a);
+}
+
+void Robot::Move(Wektor2D W)
+{
+  //std::cout << W << std::endl;
+  (*this).Obrot(W);
+  (*this).ZmienPolozenie(W);
+  Update();
+}
+void Robot::Move(Wektor2D W, PzG::LaczeDoGNUPlota L)
+{
+  Move(W);
+  Update(L);
+  L.Rysuj();
+}
+
+void Robot::Update()
+{
+  (*this).ZapiszDoPliku((*this).name.c_str());
+  (*this).Sciesz.ZapiszDoPliku((*this).Sciesz.name.c_str());
+}
+
+void Robot::Update( PzG::LaczeDoGNUPlota L)
+{
+  Update();
+  L.Rysuj();
+}
+
+void Robot::Animuj(double nowyKat, double nowePolozenie, PzG::LaczeDoGNUPlota L)
+{
+  double katDocelowy = nowyKat + kat;
+  
+  while(kat != katDocelowy)
+    {
+      if(abs(katDocelowy - kat - krok_kat) > abs(katDocelowy - kat ))
+	kat = katDocelowy;
+      else
+	kat = kat + krok_kat;
+      Obrot();
+      Update(L);
+      usleep(speed);
+    }
+
+  Wektor2D polozenieDocelowe;
+  
+  polozenieDocelowe = _PolozenieObiektu + KrokRuchu()*nowePolozenie; 
+  
+  while((_PolozenieObiektu[0] != polozenieDocelowe[0])&&
+	(_PolozenieObiektu[1] != polozenieDocelowe[1]))
+    {
+      if((abs(polozenieDocelowe[0]- _PolozenieObiektu[0])>abs(KrokRuchu()[0]))&&
+	 (abs(polozenieDocelowe[1]- _PolozenieObiektu[1])>abs(KrokRuchu()[1])))
+	{
+	  _PolozenieObiektu = _PolozenieObiektu + KrokRuchu();
+	}
+      else
+	{
+	  _PolozenieObiektu = polozenieDocelowe;
+	}
+      Move();
+      Update(L);
+      usleep(speed);
+    }
+  
+}
+
+void Robot::Skaluj(double s)
+{
+  
+  for (Wektor2D& W_lok : _TabWierz_wzorzec)
+    W_lok = (W_lok/rozmiar)*s;
+  rozmiar = s;
+  Obrot();
+  
+}

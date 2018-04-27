@@ -1,0 +1,28 @@
+#ifndef SCIESZKA_HH
+#define SCIESZKA_HH
+
+#include <iostream>
+#include <vector>
+#include "Wektor2D.hh"
+#include "ObiektGraficzny.hh"
+#include <string>
+#include <typeinfo>
+#include <time.h>
+
+class Scieszka: public ObiektGraficzny
+{
+public:
+  std::string name;
+  
+  Scieszka(){
+
+  }
+
+  int InicjalizujKsztalt(Wektor2D&);
+  void InicjalizujKsztalt();
+  void Inicjalizuj(int x);
+  int dodaj(Wektor2D&);
+  std::string tell();
+};
+
+#endif

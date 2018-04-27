@@ -1,0 +1,32 @@
+/*!
+ * \file
+ * \brief Zawiera wywołanie funkcji main
+ *
+ * Główny moduł programu wraz z wywołaniem funkcji main.
+ */
+
+#include <iostream>
+#include <iomanip>
+#include <fstream>
+#include "lacze_do_gnuplota.hh"
+#include "ObiektGraficzny.hh"
+#include "Robot.hh"
+#include "Scena.hh"
+#include "SWektor.hh"
+
+using namespace std;
+
+
+
+int main()
+{// Ta zmienna jest potrzebna do wizualizacji
+                                // rysunku prostokata
+  Scena S;
+  //SWektor<double, 2> W(2,5);
+  //SWektor<double, 2> W1(4,3);
+  //cout << W1.Kat(W) << endl;
+  S.Run();
+
+   //-------------------------------------------------------
+ 
+}

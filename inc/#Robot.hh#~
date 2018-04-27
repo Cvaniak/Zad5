@@ -1,0 +1,9 @@
+
+#include <iostream>
+#include <vector>
+#include "Wektor2D.hh"
+
+class Robot : public ObiektGraficzny
+{
+
+}
