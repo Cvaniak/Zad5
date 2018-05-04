@@ -50,7 +50,7 @@ void Scena::Menu()
 {
   char Znak;
   
-  cout << endl <<  "Obecna ilosc zyjacych wektorow to  "  << Wektor2D::ilosc_zyjacych << " z " << Wektor2D::ilosc_wszystkich << endl;
+  cout << endl <<  "Ver 1 Obecna ilosc zyjacych wektorow to  "  << Wektor2D::ilosc_zyjacych << " z " << Wektor2D::ilosc_wszystkich << endl;
   cout << "Co chesz zrobic?" << endl;
   cout << "n - nowy robot" << endl;
   cout << "z - przesun do" << endl;
