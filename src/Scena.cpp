@@ -26,15 +26,18 @@ int Scena::Run()
   cout << "sss" << endl;
   while(true)
     {
+      int go = 0;
       for(Robot &R : Roboty)
 	{
-	  R.Animuj();
+	  go += R.Animuj();
 	  cout << R.kat << endl;
     	  
 	}
       Lacze.Rysuj();
       usleep(65000);
-      cout << "www" << endl;
+      cout << fmod(-20, 360) << endl;
+      if(go == 0)
+	Menu();
     }
   return 0;
 }
@@ -78,7 +81,8 @@ void Scena::Menu()
   cout << "f - zmien szybkosc animacji " << endl;
   cout << "c - zmien skoki " << endl;
   cout << "s - skaluj do rozmiaru " << endl;
-  cout << "l - anim " << endl;
+  cout << "l - podaj obrot i ile naprzod " << endl;
+  cout << "v - podaj kordynaty " << endl;
   
   //cin >> noskipws >> Znak;
   cin >> Znak;
@@ -141,9 +145,9 @@ void Scena::Menu()
       double i = 0;
       double a, b;
       
-      cout << "LG: " << endl;
+      cout << "kat: " << endl;
       cin >> a;
-      cout << "PD: " << endl;
+      cout << "ile naprzod: " << endl;
       cin >> b;
 
       Roboty[i].UstalPolozenie(a, b);
@@ -153,7 +157,7 @@ void Scena::Menu()
       double i = 0;
       Wektor2D a;
       
-      cout << "LG: " << endl;
+      cout << "kordynaty: " << endl;
       cin >> a;
 
       Roboty[i].UstalPolozenie(a);

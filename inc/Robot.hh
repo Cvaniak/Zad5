@@ -168,7 +168,7 @@ public:
   /*!
    * \brief Obraca z animacja i przesuwa z animacja i rysuje
    */
-  void Animuj();
+  bool Animuj();
   /*!
    * \brief Obraca z animacja i przesuwa z animacja i rysuje
    */

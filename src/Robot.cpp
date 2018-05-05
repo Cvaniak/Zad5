@@ -156,38 +156,55 @@ void Robot::Update( PzG::LaczeDoGNUPlota L)
   L.Rysuj();
 }
 
-void Robot::Animuj()
+bool Robot::Animuj()
 {
   
+  std::cout << std::endl << katDocelowy << std::endl <<  polozenieDocelowe << std::endl ;
+  if( kat >= 360)
+    kat -= 360;
+  if( kat <= 0 )
+    kat += 360;
   if(kat != katDocelowy)
     {
-      if(abs(katDocelowy - kat) <= abs(krok_kat))
+      if((abs(katDocelowy - kat) < krok_kat) || (abs(katDocelowy - kat) > 360 - krok_kat))
 	{
 	  kat = katDocelowy;
 	}
       else
 	{
-	  kat = kat + copysign(krok_kat, katDocelowy);
+	  int znak = 1;
+	  if((katDocelowy - kat)<0)
+	    znak = -znak;
+	  if(abs(katDocelowy - kat)>180)
+	    znak = -znak;
+	  kat = kat + znak*krok_kat;
 	}
       Obrot();
       Update();
+      return 1;
     }
-  else if((_PolozenieObiektu[0] != polozenieDocelowe[0])&&
+  else if((_PolozenieObiektu[0] != polozenieDocelowe[0])||
 	(_PolozenieObiektu[1] != polozenieDocelowe[1]))
     {
+      std::cout << "a" << std::endl;
       if((abs(polozenieDocelowe[0]- _PolozenieObiektu[0])>abs(KrokRuchu()[0]))||
 	 (abs(polozenieDocelowe[1]- _PolozenieObiektu[1])>abs(KrokRuchu()[1])))
 	{
+	  std::cout << "c" << std::endl;
 	  _PolozenieObiektu = _PolozenieObiektu + KrokRuchu();
 	}
       else
 	{
+	  
+	  std::cout << "b" << std::endl;
 	  _PolozenieObiektu = polozenieDocelowe;
 	}
       Move();
       Update();
+      return 1;
     }
-  
+  else
+    return 0;
 }
 /*
 void Robot::Animuj(double nowyKat, double nowePolozenie, PzG::LaczeDoGNUPlota L)
@@ -241,14 +258,25 @@ void Robot::Skaluj(double s)
 
 void Robot::UstalPolozenie(double zmianaKata, double zmianaPolozenia)
 {
-  katDocelowy = kat + zmianaKata;
+  //std::cout << std::endl << fmod(zmianaKata, 360.0) << std::endl;
+  zmianaKata = fmod(zmianaKata, 360.0);
+  if(abs(zmianaKata)>180)
+    zmianaKata =  -(copysign(360, zmianaKata) - zmianaKata);
+  katDocelowy = fmod((kat + zmianaKata), 360.0);
+  if(katDocelowy < 0)
+    katDocelowy = 360.0 + katDocelowy;
+  std::cout << std::endl << katDocelowy << std::endl;
+  
   polozenieDocelowe = _PolozenieObiektu + KrokRuchu(katDocelowy)*zmianaPolozenia;
   
 }
 
 void Robot::UstalPolozenie(Wektor2D punktKoncowy)
 {
-  katDocelowy = kat + KatObrotu(punktKoncowy);
+  
+  katDocelowy = KatObrotu(punktKoncowy);
+  if(katDocelowy < 0)
+    katDocelowy = 360.0 + katDocelowy;
   polozenieDocelowe = punktKoncowy;
 }
     
