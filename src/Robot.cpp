@@ -95,7 +95,7 @@ double Robot::KatObrotu(Wektor2D W)
   Wektor2D Zero(1, 0);
   Wektor2D pom(0, 0);
   double a = 0;
-  pom = W;
+  pom = W-_PolozenieObiektu;
   a = Zero.Kat(pom);
   ///std::cout << "kat " << a << std::endl;
  
@@ -107,6 +107,15 @@ Wektor2D Robot::KrokRuchu()
 
   Wektor2D W(0,1);
   W.Obrot(kat);
+  return W;
+}
+
+
+Wektor2D Robot::KrokRuchu(double danyKat)
+{
+
+  Wektor2D W(0,1);
+  W.Obrot(danyKat);
   return W;
 }
 
@@ -152,13 +161,13 @@ void Robot::Animuj()
   
   if(kat != katDocelowy)
     {
-      if(abs(katDocelowy - kat - krok_kat) > abs(katDocelowy - kat ))
+      if(abs(katDocelowy - kat) <= abs(krok_kat))
 	{
 	  kat = katDocelowy;
 	}
       else
 	{
-	  kat = kat + krok_kat;
+	  kat = kat + copysign(krok_kat, katDocelowy);
 	}
       Obrot();
       Update();
@@ -228,3 +237,19 @@ void Robot::Skaluj(double s)
   Obrot();
   
 }
+
+
+void Robot::UstalPolozenie(double zmianaKata, double zmianaPolozenia)
+{
+  katDocelowy = kat + zmianaKata;
+  polozenieDocelowe = _PolozenieObiektu + KrokRuchu(katDocelowy)*zmianaPolozenia;
+  
+}
+
+void Robot::UstalPolozenie(Wektor2D punktKoncowy)
+{
+  katDocelowy = kat + KatObrotu(punktKoncowy);
+  polozenieDocelowe = punktKoncowy;
+}
+    
+

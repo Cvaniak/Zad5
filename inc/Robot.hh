@@ -138,6 +138,10 @@ public:
    */
   Wektor2D KrokRuchu();
   /*!
+   * \brief Zwraca wektor jednostkowy rownolegly do Robota
+   */
+  Wektor2D KrokRuchu(double danyKat);
+  /*!
    * \brief Aktualizuje pozycje do aktualnej i dodaje punkt do scieszki
    */
   void Move();
@@ -173,6 +177,17 @@ public:
    * \brief Skaluje do danej wielkosci
    */
   void Skaluj(double s);
+  /*!
+   * \brief Skaluje do danej wielkosci
+   */
+  void UstalPolozenie(double zmianaKata, double zmianaPolozenia);
+  /*!
+   * \brief Skaluje do danej wielkosci
+   */
+  void UstalPolozenie(Wektor2D punktKoncowy);
+
+
+  
 };
 
 #endif

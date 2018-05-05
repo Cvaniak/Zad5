@@ -74,16 +74,12 @@ void Scena::Menu()
   cout << endl <<  "Ver 1 Obecna ilosc zyjacych wektorow to  "  << Wektor2D::ilosc_zyjacych << " z " << Wektor2D::ilosc_wszystkich << endl;
   cout << "Co chesz zrobic?" << endl;
   cout << "n - nowy robot" << endl;
-  cout << "z - przesun do" << endl;
-  cout << "o - obrot o" << endl;
-  cout << "n - nowy robot" << endl;
-  cout << "m - do przodu wzgledem katu" << endl;
-  cout << "a - animacja o obrot i ruch do przodu" << endl;
-  cout << "s - skaluj do rozmiaru " << endl;
-  cout << "c - zmien skoki " << endl;
-  cout << "f - zmien szybkosc animacji " << endl;
   cout << "p - nowa przeszkoda " << endl;
+  cout << "f - zmien szybkosc animacji " << endl;
+  cout << "c - zmien skoki " << endl;
+  cout << "s - skaluj do rozmiaru " << endl;
   cout << "l - anim " << endl;
+  
   //cin >> noskipws >> Znak;
   cin >> Znak;
   if (Znak == 'n')
@@ -94,50 +90,6 @@ void Scena::Menu()
       nowyRobot(IloscRobotow++, W);
       Lacze.Rysuj();
     }
-  if (Znak == 'z')
-    {
-      int k;
-      cout << "Podaj numer robota" << endl;
-      cin >> k;
-      cout << "Podaj x i y" << endl;
-      cin >> NowePolozenie;
-      Roboty[k].Move(NowePolozenie);
-      Roboty[k].Update(Lacze);
-      Lacze.Rysuj();
-    }
-  if (Znak == 'o')
-    {
-      double k, r;
-      cout << "Podaj numer robota" << endl;
-      cin >> k;
-      cout << "Podaj kat" << endl;
-      cin >> r;
-      Roboty[k].Obrot(r);
-      Roboty[k].Update(Lacze);
-    }
-  if (Znak == 'm')
-    {
-      double k, m;
-      cout << "Podaj numer robota" << endl;
-      cin >> k;
-      cout << "Podaj odleglosc" << endl;
-      cin >> m;
-      Roboty[k].Move(m);
-      Roboty[k].Update(Lacze);
-    }
-  /*
-  if (Znak == 'a')
-    {
-      double j, k, m;
-      cout << "Podaj numer robota" << endl;
-      cin >> j;
-      cout << "Podaj kat" << endl;
-      cin >> k;
-      cout << "Podaj odleglosc" << endl;
-      cin >> m;
-      Roboty[j].Animuj(k, m, Lacze);
-    }*/
-  
   if (Znak == 's')
     {
       double j, s;
@@ -187,17 +139,23 @@ void Scena::Menu()
     if (Znak == 'l')
     {
       double i = 0;
-      double a;
-      Wektor2D b;
+      double a, b;
       
       cout << "LG: " << endl;
       cin >> a;
       cout << "PD: " << endl;
       cin >> b;
 
-      Roboty[i].katDocelowy = a;
+      Roboty[i].UstalPolozenie(a, b);
+    }
+    if (Znak == 'v')
+    {
+      double i = 0;
+      Wektor2D a;
       
-      Roboty[i].polozenieDocelowe = b;
-      
+      cout << "LG: " << endl;
+      cin >> a;
+
+      Roboty[i].UstalPolozenie(a);
     }
 }
