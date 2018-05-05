@@ -159,13 +159,15 @@ void Robot::Update( PzG::LaczeDoGNUPlota L)
 bool Robot::Animuj()
 {
   
-  std::cout << std::endl << katDocelowy << std::endl <<  polozenieDocelowe << std::endl ;
+  std::cout << std::endl << "z " << kat << " "  << katDocelowy << std::endl <<  polozenieDocelowe << std::endl ;
   if( kat >= 360)
     kat -= 360;
-  if( kat <= 0 )
+  if( kat < 0 )
     kat += 360;
+  
   if(kat != katDocelowy)
     {
+      std::cout << "a" << std::endl;
       if((abs(katDocelowy - kat) < krok_kat) || (abs(katDocelowy - kat) > 360 - krok_kat))
 	{
 	  kat = katDocelowy;
@@ -186,17 +188,14 @@ bool Robot::Animuj()
   else if((_PolozenieObiektu[0] != polozenieDocelowe[0])||
 	(_PolozenieObiektu[1] != polozenieDocelowe[1]))
     {
-      std::cout << "a" << std::endl;
+      std::cout << "b" << std::endl;
       if((abs(polozenieDocelowe[0]- _PolozenieObiektu[0])>abs(KrokRuchu()[0]))||
 	 (abs(polozenieDocelowe[1]- _PolozenieObiektu[1])>abs(KrokRuchu()[1])))
 	{
-	  std::cout << "c" << std::endl;
 	  _PolozenieObiektu = _PolozenieObiektu + KrokRuchu();
 	}
       else
 	{
-	  
-	  std::cout << "b" << std::endl;
 	  _PolozenieObiektu = polozenieDocelowe;
 	}
       Move();
@@ -265,7 +264,7 @@ void Robot::UstalPolozenie(double zmianaKata, double zmianaPolozenia)
   katDocelowy = fmod((kat + zmianaKata), 360.0);
   if(katDocelowy < 0)
     katDocelowy = 360.0 + katDocelowy;
-  std::cout << std::endl << katDocelowy << std::endl;
+  std::cout << std::endl << KrokRuchu(katDocelowy) << std::endl;
   
   polozenieDocelowe = _PolozenieObiektu + KrokRuchu(katDocelowy)*zmianaPolozenia;
   

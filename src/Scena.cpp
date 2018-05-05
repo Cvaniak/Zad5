@@ -34,7 +34,7 @@ int Scena::Run()
     	  
 	}
       Lacze.Rysuj();
-      usleep(65000);
+      usleep(szybkoscAnimacji);
       cout << fmod(-20, 360) << endl;
       if(go == 0)
 	Menu();
@@ -106,12 +106,7 @@ void Scena::Menu()
     }
   if (Znak == 'f')
     {
-      double j, f;
-      cout << "Podaj numer robota" << endl;
-      cin >> j;
-      cout << "Podaj czas miedzy skokami w mikro sekundach" << endl;
-      cin >> f;
-      Roboty[j].speed = f;
+      cin >> szybkoscAnimacji;
     }
   if (Znak == 'c')
     {
