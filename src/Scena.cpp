@@ -7,6 +7,7 @@
 #include "lacze_do_gnuplota.hh"
 #include "ObiektGraficzny.hh"
 #include "Robot.hh"
+#include "Przeszkoda.hh"
 #include <string>
 #include <cstring>
 #include <time.h>
@@ -19,23 +20,43 @@ int Scena::Run()
 {
   Wektor2D Z(100,-100);
   
-  nowyRobot(IloscRobotow++);
+  nowyRobot(IloscRobotow++, {0, 0});
   Lacze.Rysuj();
+  Menu();
+  cout << "sss" << endl;
   while(true)
     {
-      Menu();      
+      for(Robot &R : Roboty)
+	{
+	  R.Animuj();
+	  cout << R.kat << endl;
+    	  
+	}
+      Lacze.Rysuj();
+      usleep(65000);
+      cout << "www" << endl;
     }
   return 0;
 }
 
-int Scena::nowyRobot(int x)
+int Scena::nowyRobot(int x, Wektor2D W)
 {
-  Robot R(x);
+  Robot R(x, W);
   Lacze.DodajNazwePliku(R.name.c_str(),PzG::RR_Ciagly,2);
   Lacze.DodajNazwePliku(R.Sciesz.name.c_str(),PzG::RR_Ciagly,2);
   if (!R.ZapiszDoPliku(R.name.c_str())) return 1;
   if (!R.Sciesz.ZapiszDoPliku(R.Sciesz.name.c_str())) return 1;
   Roboty.push_back(R);
+  
+  return 0;
+}
+
+int Scena::nowaPrzeszkoda(int x, Wektor2D LG, Wektor2D PD)
+{
+  Przeszkoda P(x, LG, PD);
+  Lacze.DodajNazwePliku(P.name.c_str(),PzG::RR_Ciagly,2);
+  if (!P.ZapiszDoPliku(P.name.c_str())) return 1;
+  Przeszkody.push_back(P);
   
   return 0;
 }
@@ -61,11 +82,16 @@ void Scena::Menu()
   cout << "s - skaluj do rozmiaru " << endl;
   cout << "c - zmien skoki " << endl;
   cout << "f - zmien szybkosc animacji " << endl;
+  cout << "p - nowa przeszkoda " << endl;
+  cout << "l - anim " << endl;
   //cin >> noskipws >> Znak;
   cin >> Znak;
   if (Znak == 'n')
     {
-      nowyRobot(IloscRobotow++);
+      Wektor2D W;
+      cout << "Podaj Wspolrzedne" << endl;
+      cin >> W;
+      nowyRobot(IloscRobotow++, W);
       Lacze.Rysuj();
     }
   if (Znak == 'z')
@@ -99,6 +125,7 @@ void Scena::Menu()
       Roboty[k].Move(m);
       Roboty[k].Update(Lacze);
     }
+  /*
   if (Znak == 'a')
     {
       double j, k, m;
@@ -109,7 +136,7 @@ void Scena::Menu()
       cout << "Podaj odleglosc" << endl;
       cin >> m;
       Roboty[j].Animuj(k, m, Lacze);
-    }
+    }*/
   
   if (Znak == 's')
     {
@@ -144,4 +171,33 @@ void Scena::Menu()
       }
   // cin >> NowePolozenie;
   
+  if (Znak == 'p')
+    {
+      Wektor2D LG, PD;
+      
+      cout << "LG: " << endl;
+      cin >> LG;
+      cout << "PD: " << endl;
+      cin >> PD;
+ 
+      nowaPrzeszkoda(IloscPrzeszkod++, LG, PD);
+      Lacze.Rysuj();      
+    }
+  
+    if (Znak == 'l')
+    {
+      double i = 0;
+      double a;
+      Wektor2D b;
+      
+      cout << "LG: " << endl;
+      cin >> a;
+      cout << "PD: " << endl;
+      cin >> b;
+
+      Roboty[i].katDocelowy = a;
+      
+      Roboty[i].polozenieDocelowe = b;
+      
+    }
 }

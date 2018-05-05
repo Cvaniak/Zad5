@@ -6,21 +6,18 @@
 #include <unistd.h>
 
 
-void Robot::Inicjalizuj(Wektor2D LG, Wektor2D PD)
+void Przeszkoda::Inicjalizuj(Wektor2D LG, Wektor2D PD)
 {
-  _PolozenieObiektu = LG;
-
-  InicjalizujKsztalt(PD);
-  
+  InicjalizujKsztalt(LG, PD);
 }
 
-void Robot::InicjalizujKsztalt(Wektor2D PD)
+void Przeszkoda::InicjalizujKsztalt(Wektor2D LG, Wektor2D PD)
 {
-  _TabWierz_wzorzec.push_back({ 0    ,  0  });
-  _TabWierz_wzorzec.push_back({ PD[0],  0  });
+  _TabWierz_wzorzec.push_back(  LG          );
+  _TabWierz_wzorzec.push_back({PD[0], LG[1]});
   _TabWierz_wzorzec.push_back(  PD          );
-  _TabWierz_wzorzec.push_back({ 0    ,PD[1]});
-  _TabWierz_wzorzec.push_back({ 0    ,  0  });
+  _TabWierz_wzorzec.push_back({LG[0], PD[1]});
+  _TabWierz_wzorzec.push_back(  LG          );
   _TabWierz = _TabWierz_wzorzec;
   
   /* _TabWierz[1][0] =  30;  _TabWierz[1][1]=   0;

@@ -19,6 +19,7 @@ void Robot::Inicjalizuj()
 
 void Robot::InicjalizujKsztalt()
 {
+  promien = 20*sqrt(2);
   _TabWierz_wzorzec.push_back({ 0 ,  45});
   _TabWierz_wzorzec.push_back({ 0 ,  0 });
   _TabWierz_wzorzec.push_back({ 0 ,  20});
@@ -146,6 +147,40 @@ void Robot::Update( PzG::LaczeDoGNUPlota L)
   L.Rysuj();
 }
 
+void Robot::Animuj()
+{
+  
+  if(kat != katDocelowy)
+    {
+      if(abs(katDocelowy - kat - krok_kat) > abs(katDocelowy - kat ))
+	{
+	  kat = katDocelowy;
+	}
+      else
+	{
+	  kat = kat + krok_kat;
+	}
+      Obrot();
+      Update();
+    }
+  else if((_PolozenieObiektu[0] != polozenieDocelowe[0])&&
+	(_PolozenieObiektu[1] != polozenieDocelowe[1]))
+    {
+      if((abs(polozenieDocelowe[0]- _PolozenieObiektu[0])>abs(KrokRuchu()[0]))||
+	 (abs(polozenieDocelowe[1]- _PolozenieObiektu[1])>abs(KrokRuchu()[1])))
+	{
+	  _PolozenieObiektu = _PolozenieObiektu + KrokRuchu();
+	}
+      else
+	{
+	  _PolozenieObiektu = polozenieDocelowe;
+	}
+      Move();
+      Update();
+    }
+  
+}
+/*
 void Robot::Animuj(double nowyKat, double nowePolozenie, PzG::LaczeDoGNUPlota L)
 {
   double katDocelowy = nowyKat + kat;
@@ -182,12 +217,13 @@ void Robot::Animuj(double nowyKat, double nowePolozenie, PzG::LaczeDoGNUPlota L)
     }
   
 }
-
+*/
 void Robot::Skaluj(double s)
 {
   
   for (Wektor2D& W_lok : _TabWierz_wzorzec)
     W_lok = (W_lok/rozmiar)*s;
+  promien = promien/rozmiar*s;
   rozmiar = s;
   Obrot();
   

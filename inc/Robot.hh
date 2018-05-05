@@ -44,6 +44,18 @@ public:
    */
   double kat = 0;
   /*!
+   * \brief Docelowy kat obrotu robota
+   */
+  double katDocelowy = 0;
+  /*!
+   * \brief Docelowe polozenie robota
+   */
+  Wektor2D polozenieDocelowe = {0, 0};
+  /*!
+   * \brief promien do kolizji
+   */
+  double promien = 0;
+  /*!
    * \brief jednostka ruchu do przodu
    */
   double krok_move = 3;
@@ -63,6 +75,23 @@ public:
    */
   Robot(int x)
   {
+    numer = x;
+    std::string   a = "figury/";
+    std::string   b = "robot";
+    std::string   c = std::to_string(x);
+    std::string   d = ".dat";
+    name = a + b + c + d;
+    Sciesz.Inicjalizuj(x);
+    Inicjalizuj();
+  }
+  /*!
+   * \brief Konstruktor robota
+   *
+   * Nadaje mu nazwe, inicjalizuje scieszke, Inicjalizuje krztalt
+   */
+  Robot(int x, Wektor2D Pozycja)
+  {
+    _PolozenieObiektu = Pozycja;
     numer = x;
     std::string   a = "figury/";
     std::string   b = "robot";
@@ -132,6 +161,10 @@ public:
    * \brief Zapisuje do odpowiednich plikow Robota i jego Scieszke i Rysuje
    */
   void Update( PzG::LaczeDoGNUPlota L);
+  /*!
+   * \brief Obraca z animacja i przesuwa z animacja i rysuje
+   */
+  void Animuj();
   /*!
    * \brief Obraca z animacja i przesuwa z animacja i rysuje
    */

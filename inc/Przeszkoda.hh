@@ -42,13 +42,12 @@ public:
    * \brief Zmienna informujaca o wielkosci robota
    */
   double wysokosc = 0;
-  //Robot(){}
   /*!
    * \brief Konstruktor robota
    *
    * Nadaje mu nazwe, inicjalizuje scieszke, Inicjalizuje krztalt
    */
-  Przeszkoda(int i, Wektor2D LG, Wektor PD)
+  Przeszkoda(int i, Wektor2D LG, Wektor2D PD)
   {
     std::string   a = "figury/";
     std::string   b = "przeszkoda";
@@ -63,11 +62,11 @@ public:
   /*!
    * \brief Metoda incjacji krztaltu Robota
    */
-  void InicjalizujKsztalt();
+  void InicjalizujKsztalt(Wektor2D LG, Wektor2D PD);
   /*!
    * \brief Metoda wywolujoca Inicjalizacje krztaltu robota i scieszki
    */
-  void Inicjalizuj();
+  void Inicjalizuj(Wektor2D LG, Wektor2D PD);
 };
 
 #endif

@@ -4,6 +4,7 @@
 
 #include "lacze_do_gnuplota.hh"
 #include "Robot.hh"
+#include "Przeszkoda.hh"
 #include <vector>
 
   /*!
@@ -23,6 +24,13 @@ public:
    * 
    */
   std::vector <Robot> Roboty;
+    /*!
+   * \brief Tablica dynamiczna przechowujaca Roboty
+   *
+   * Przechowuje stworzone roboty
+   * 
+   */
+  std::vector <Przeszkoda> Przeszkody;
   /*!
    * \brief Lacze do Gnuplota
    *
@@ -36,6 +44,13 @@ public:
    * to tymczasowy sposob
    */
   int IloscRobotow = 0;
+  /*!
+   * \brief Zmienna przechowujaca wiadomosc o ilosci robotow
+   *
+   * Dodatkowo jest wykorzystywana posrednio do indeksowania Robotow
+   * to tymczasowy sposob
+   */
+  int IloscPrzeszkod = 0;
   /*!
    * \brief Zmienna uzywana do zmiany polozenia  
    *
@@ -57,7 +72,14 @@ public:
    *
    * Tworzy rowniez odpowiednie lacze z Gnuplotem
    */
-  int nowyRobot(int x);  /*!
+  int nowyRobot(int x, Wektor2D W);
+  /*!
+   * \brief metoda tworzaca nowego robota
+   *
+   * Tworzy rowniez odpowiednie lacze z Gnuplotem
+   */
+  int nowaPrzeszkoda(int x, Wektor2D LG, Wektor2D PD);
+  /*!
    * \brief Nic nie robi narazie
    *
    *
