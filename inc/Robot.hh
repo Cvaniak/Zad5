@@ -4,6 +4,8 @@
 #include <iostream>
 #include <vector>
 #include "Wektor2D.hh"
+#include "Przeszkoda.hh"
+
 #include "ObiektGraficzny.hh"
 #include "lacze_do_gnuplota.hh"
 #include "Scieszka.hh"
@@ -168,7 +170,7 @@ public:
   /*!
    * \brief Obraca z animacja i przesuwa z animacja i rysuje
    */
-  bool Animuj();
+  bool Animuj(std::vector <Przeszkoda> Przeszkody);
   /*!
    * \brief Obraca z animacja i przesuwa z animacja i rysuje
    */
@@ -185,6 +187,8 @@ public:
    * \brief Skaluje do danej wielkosci
    */
   void UstalPolozenie(Wektor2D punktKoncowy);
+
+  bool Collision(std::vector <Przeszkoda> Przeszkody);
 
 
   

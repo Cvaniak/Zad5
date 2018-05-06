@@ -1,6 +1,8 @@
 
 #include "Robot.hh"
 #include "Scieszka.hh"
+#include "Przeszkoda.hh"
+
 #include "lacze_do_gnuplota.hh"
 
 #include <iostream>
@@ -19,6 +21,7 @@ void Robot::Inicjalizuj()
 
 void Robot::InicjalizujKsztalt()
 {
+  promien = 20*sqrt(2);
   _TabWierz_wzorzec.push_back({ 0 ,  45});
   _TabWierz_wzorzec.push_back({ 0 ,  0 });
   _TabWierz_wzorzec.push_back({ 0 ,  20});
@@ -94,7 +97,7 @@ double Robot::KatObrotu(Wektor2D W)
   Wektor2D Zero(1, 0);
   Wektor2D pom(0, 0);
   double a = 0;
-  pom = W;
+  pom = W-_PolozenieObiektu;
   a = Zero.Kat(pom);
   ///std::cout << "kat " << a << std::endl;
  
@@ -106,6 +109,15 @@ Wektor2D Robot::KrokRuchu()
 
   Wektor2D W(0,1);
   W.Obrot(kat);
+  return W;
+}
+
+
+Wektor2D Robot::KrokRuchu(double danyKat)
+{
+
+  Wektor2D W(0,1);
+  W.Obrot(danyKat);
   return W;
 }
 
@@ -146,6 +158,60 @@ void Robot::Update( PzG::LaczeDoGNUPlota L)
   L.Rysuj();
 }
 
+bool Robot::Animuj(std::vector <Przeszkoda> Przeszkody)
+{
+  
+  std::cout << std::endl << "z " << kat << " "  << katDocelowy << std::endl <<  polozenieDocelowe << std::endl ;
+  if( kat >= 360)
+    kat -= 360;
+  if( kat < 0 )
+    kat += 360;
+  
+  if(kat != katDocelowy)
+    {
+      std::cout << "a" << std::endl;
+      if((abs(katDocelowy - kat) < krok_kat) || (abs(katDocelowy - kat) > 360 - krok_kat))
+	{
+	  kat = katDocelowy;
+	}
+      else
+	{
+	  int znak = 1;
+	  if((katDocelowy - kat)<0)
+	    znak = -znak;
+	  if(abs(katDocelowy - kat)>180)
+	    znak = -znak;
+	  kat = kat + znak*krok_kat;
+	}
+      Obrot();
+      Update();
+      return 1;
+    }
+  else if((_PolozenieObiektu[0] != polozenieDocelowe[0])||
+	(_PolozenieObiektu[1] != polozenieDocelowe[1]))
+    {
+      std::cout << "b" << std::endl;
+      if((abs(polozenieDocelowe[0]- _PolozenieObiektu[0])>abs(KrokRuchu()[0]))||
+	 (abs(polozenieDocelowe[1]- _PolozenieObiektu[1])>abs(KrokRuchu()[1])))
+	{
+	  //if
+	  if(Collision(Przeszkody))
+	    polozenieDocelowe = _PolozenieObiektu;
+	  else
+	    _PolozenieObiektu = _PolozenieObiektu + KrokRuchu();
+	}
+      else
+	{
+	  _PolozenieObiektu = polozenieDocelowe;
+	}
+      Move();
+      Update();
+      return 1;
+    }
+  else
+    return 0;
+}
+/*
 void Robot::Animuj(double nowyKat, double nowePolozenie, PzG::LaczeDoGNUPlota L)
 {
   double katDocelowy = nowyKat + kat;
@@ -162,13 +228,12 @@ void Robot::Animuj(double nowyKat, double nowePolozenie, PzG::LaczeDoGNUPlota L)
     }
 
   Wektor2D polozenieDocelowe;
-  
   polozenieDocelowe = _PolozenieObiektu + KrokRuchu()*nowePolozenie; 
   
-  while((_PolozenieObiektu[0] != polozenieDocelowe[0])&&
+  while((_PolozenieObiektu[0] != polozenieDocelowe[0])||
 	(_PolozenieObiektu[1] != polozenieDocelowe[1]))
     {
-      if((abs(polozenieDocelowe[0]- _PolozenieObiektu[0])>abs(KrokRuchu()[0]))&&
+      if((abs(polozenieDocelowe[0]- _PolozenieObiektu[0])>abs(KrokRuchu()[0]))||
 	 (abs(polozenieDocelowe[1]- _PolozenieObiektu[1])>abs(KrokRuchu()[1])))
 	{
 	  _PolozenieObiektu = _PolozenieObiektu + KrokRuchu();
@@ -183,13 +248,72 @@ void Robot::Animuj(double nowyKat, double nowePolozenie, PzG::LaczeDoGNUPlota L)
     }
   
 }
-
+*/
 void Robot::Skaluj(double s)
 {
   
   for (Wektor2D& W_lok : _TabWierz_wzorzec)
     W_lok = (W_lok/rozmiar)*s;
+  promien = promien/rozmiar*s;
   rozmiar = s;
   Obrot();
+  
+}
+
+
+void Robot::UstalPolozenie(double zmianaKata, double zmianaPolozenia)
+{
+  //std::cout << std::endl << fmod(zmianaKata, 360.0) << std::endl;
+  zmianaKata = fmod(zmianaKata, 360.0);
+  if(abs(zmianaKata)>180)
+    zmianaKata =  -(copysign(360, zmianaKata) - zmianaKata);
+  katDocelowy = fmod((kat + zmianaKata), 360.0);
+  if(katDocelowy < 0)
+    katDocelowy = 360.0 + katDocelowy;
+  std::cout << std::endl << KrokRuchu(katDocelowy) << std::endl;
+  
+  polozenieDocelowe = _PolozenieObiektu + KrokRuchu(katDocelowy)*zmianaPolozenia;
+  
+}
+
+void Robot::UstalPolozenie(Wektor2D punktKoncowy)
+{
+  
+  katDocelowy = KatObrotu(punktKoncowy);
+  if(katDocelowy < 0)
+    katDocelowy = 360.0 + katDocelowy;
+  polozenieDocelowe = punktKoncowy;
+}
+    
+bool Robot::Collision(std::vector <Przeszkoda> Przeszkody)
+{//                &
+  for( Przeszkoda P : Przeszkody)
+    {
+      double odlegloscX = abs(_PolozenieObiektu[0] - P._PolozenieObiektu[0]);
+      double odlegloscY = abs(_PolozenieObiektu[1] - P._PolozenieObiektu[1]);
+      
+      std::cout << std::endl << odlegloscX << " gggggg " << odlegloscY << std::endl;
+      if(odlegloscX <= promien + P.szerokosc/2)
+	return 1;
+      if(odlegloscY <= promien + P.wysokosc/2)
+	return 1;
+    }
+      return 0;
+  /*def do(self, vector, game, pozycja, rect, potencjalnie = 0):
+        for object in pygame.sprite.spritecollide(self, game.walls, False):
+            if object.rect.colliderect(rect.move(vector.x, 0)):
+                if vector.x > 0:
+                    pozycja.x = object.rect.left - rect.width / 2.0
+                if vector.x < 0:
+                    pozycja.x = object.rect.right + rect.width / 2.0
+                vector.x = 0
+            if object.rect.colliderect(rect.move(0, vector.y)):
+                if vector.y > 0:
+                    pozycja.y = object.rect.top - rect.height / 2.0
+                if vector.y < 0:
+                    pozycja.y = object.rect.bottom + rect.height / 2.0
+                vector.y = 0
+        return vector
+  */
   
 }

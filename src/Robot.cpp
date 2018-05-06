@@ -1,6 +1,8 @@
 
 #include "Robot.hh"
 #include "Scieszka.hh"
+#include "Przeszkoda.hh"
+
 #include "lacze_do_gnuplota.hh"
 
 #include <iostream>
@@ -156,7 +158,7 @@ void Robot::Update( PzG::LaczeDoGNUPlota L)
   L.Rysuj();
 }
 
-bool Robot::Animuj()
+bool Robot::Animuj(std::vector <Przeszkoda> Przeszkody)
 {
   
   std::cout << std::endl << "z " << kat << " "  << katDocelowy << std::endl <<  polozenieDocelowe << std::endl ;
@@ -192,7 +194,11 @@ bool Robot::Animuj()
       if((abs(polozenieDocelowe[0]- _PolozenieObiektu[0])>abs(KrokRuchu()[0]))||
 	 (abs(polozenieDocelowe[1]- _PolozenieObiektu[1])>abs(KrokRuchu()[1])))
 	{
-	  _PolozenieObiektu = _PolozenieObiektu + KrokRuchu();
+	  //if
+	  if(Collision(Przeszkody))
+	    polozenieDocelowe = _PolozenieObiektu;
+	  else
+	    _PolozenieObiektu = _PolozenieObiektu + KrokRuchu();
 	}
       else
 	{
@@ -279,4 +285,16 @@ void Robot::UstalPolozenie(Wektor2D punktKoncowy)
   polozenieDocelowe = punktKoncowy;
 }
     
-
+bool Robot::Collision(std::vector <Przeszkoda> Przeszkody)
+{//                &
+  for( Przeszkoda P : Przeszkody)
+    {
+      double odlegloscX = abs(_PolozenieObiektu[0] - P._PolozenieObiektu[0]);
+      double odlegloscY = abs(_PolozenieObiektu[1] - P._PolozenieObiektu[1]);
+      if(odlegloscX <= promien + P.szerokosc/2  + KrokRuchu()[0] &&
+	 odlegloscY <= promien + P.wysokosc/2   + KrokRuchu()[1])
+	return 1;
+    }
+      return 0;
+  
+}

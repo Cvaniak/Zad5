@@ -21,6 +21,7 @@ int Scena::Run()
   Wektor2D Z(100,-100);
   
   nowyRobot(IloscRobotow++, {0, 0});
+  nowaPrzeszkoda(IloscPrzeszkod++, {-200, 200}, {200, 100});
   Lacze.Rysuj();
   Menu();
   cout << "sss" << endl;
@@ -29,7 +30,7 @@ int Scena::Run()
       int go = 0;
       for(Robot &R : Roboty)
 	{
-	  go += R.Animuj();
+	  go += R.Animuj(Przeszkody);
 	  cout << R.kat << endl;
     	  
 	}
@@ -158,3 +159,4 @@ void Scena::Menu()
       Roboty[i].UstalPolozenie(a);
     }
 }
+
