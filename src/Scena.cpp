@@ -12,6 +12,9 @@
 #include <cstring>
 #include <time.h>
 #include <unistd.h>
+#include <linux/input.h>
+
+#include <ncurses.h>
 
 
 using namespace std;
@@ -23,8 +26,17 @@ int Scena::Run()
   nowyRobot(IloscRobotow++, {0, 0});
   nowaPrzeszkoda(IloscPrzeszkod++, {-200, 200}, {200, 100});
   Lacze.Rysuj();
+  //initscr();
+  //noecho();
+  int c;
   Menu();
   cout << "sss" << endl;
+  while(true)
+    {
+      initscr();
+      noecho();
+      getch();
+    }
   while(true)
     {
       int go = 0;
@@ -84,8 +96,9 @@ void Scena::Menu()
   cout << "s - skaluj do rozmiaru " << endl;
   cout << "l - podaj obrot i ile naprzod " << endl;
   cout << "v - podaj kordynaty " << endl;
-  
+  //refresh();
   //cin >> noskipws >> Znak;
+
   cin >> Znak;
   if (Znak == 'n')
     {

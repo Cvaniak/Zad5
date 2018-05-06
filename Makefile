@@ -10,7 +10,7 @@ __start__: ./robot_scena
 
 ./robot_scena: obj obj/main.o obj/ObiektGraficzny.o obj/lacze_do_gnuplota.o obj/Robot.o obj/Scena.o obj/Scieszka.o obj/Przeszkoda.o
 	g++ -Wall -pedantic -std=c++11 -o ./robot_scena obj/main.o\
-                        obj/lacze_do_gnuplota.o obj/ObiektGraficzny.o obj/Robot.o obj/Scena.o obj/Scieszka.o obj/Przeszkoda.o
+                        obj/lacze_do_gnuplota.o obj/ObiektGraficzny.o obj/Robot.o obj/Scena.o obj/Scieszka.o obj/Przeszkoda.o -lncurses
 
 obj:
 	mkdir -p obj
