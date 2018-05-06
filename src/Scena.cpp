@@ -31,25 +31,20 @@ int Scena::Run()
   int c;
   Menu();
   cout << "sss" << endl;
-  while(true)
+  /* while(true)
     {
       initscr();
       noecho();
-      getch();
-    }
+      c = getch();
+      clear();
+      printw("znaczek: %d", c);
+      refresh();
+      }*/
   while(true)
     {
-      int go = 0;
-      for(Robot &R : Roboty)
-	{
-	  go += R.Animuj(Przeszkody);
-	  cout << R.kat << endl;
-    	  
-	}
-      Lacze.Rysuj();
+      Update();
       usleep(szybkoscAnimacji);
-      cout << fmod(-20, 360) << endl;
-      if(go == 0)
+      if(Status == 0)
 	Menu();
     }
   return 0;
@@ -77,9 +72,14 @@ int Scena::nowaPrzeszkoda(int x, Wektor2D LG, Wektor2D PD)
   return 0;
 }
 
-void Update()
+void Scena::Update()
 {
-  
+  Status = 0;
+  for(Robot &R : Roboty)
+    {
+      Status += R.Animuj(Przeszkody);
+    }
+  Lacze.Rysuj();  
 }
 
 
@@ -91,12 +91,12 @@ void Scena::Menu()
   cout << "Co chesz zrobic?" << endl;
   cout << "n - nowy robot" << endl;
   cout << "p - nowa przeszkoda " << endl;
+  cout << "z - zmien polozenie przeszkody " << endl;
   cout << "f - zmien szybkosc animacji " << endl;
   cout << "c - zmien skoki " << endl;
   cout << "s - skaluj do rozmiaru " << endl;
   cout << "l - podaj obrot i ile naprzod " << endl;
   cout << "v - podaj kordynaty " << endl;
-  //refresh();
   //cin >> noskipws >> Znak;
 
   cin >> Znak;
@@ -151,8 +151,11 @@ void Scena::Menu()
   
     if (Znak == 'l')
     {
-      double i = 0;
+      double i;
       double a, b;
+      
+      cout << "Podaj numer robota" << endl;
+      cin >> i;
       
       cout << "kat: " << endl;
       cin >> a;
@@ -163,13 +166,52 @@ void Scena::Menu()
     }
     if (Znak == 'v')
     {
-      double i = 0;
+      double i;
       Wektor2D a;
       
+      cout << "Podaj numer robota" << endl;
+      cin >> i;
       cout << "kordynaty: " << endl;
       cin >> a;
 
       Roboty[i].UstalPolozenie(a);
     }
+    if (Znak == 'z')
+    {
+      double i;
+      Wektor2D b;
+      
+      cout << "Podaj numer przeszkody" << endl;
+      cin >> i;
+      //Lacze.DodajNazwePliku(Przeszkody[i].name.c_str(),PzG::RR_Ciagly,5);
+      Lacze.Rysuj();
+      cout << "Nowe Polozenie:  " << endl;
+      cin >> b;
+
+      Przeszkody[i].ZmienPolozenie(b);
+      cout << "Nowe Polozenie:  " << Przeszkody[i]._PolozenieObiektu << endl;
+      
+      OdnowListePlikow();
+      Lacze.Rysuj();
+    }
+
+    
 }
 
+
+void Scena::OdnowListePlikow()
+{
+  Lacze.UsunWszystkieNazwyPlikow();
+  for(Robot &R : Roboty)
+    { 
+      Lacze.DodajNazwePliku(R.name.c_str(),PzG::RR_Ciagly,2);
+      Lacze.DodajNazwePliku(R.Sciesz.name.c_str(),PzG::RR_Ciagly,2);
+    }
+  
+  for(Przeszkoda &P : Przeszkody)
+    {
+      Lacze.DodajNazwePliku(P.name.c_str(),PzG::RR_Ciagly,2);
+    }
+  
+  Lacze.Rysuj();  
+}

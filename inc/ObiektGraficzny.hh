@@ -11,6 +11,8 @@
 #include <iostream>
 #include <vector>
 #include "Wektor2D.hh"
+#include "lacze_do_gnuplota.hh"
+#include <string>
 
 /*!
  * \brief Modeluje obiekt, który ma swoją reprezentację graficzną
@@ -25,6 +27,12 @@ class ObiektGraficzny {
 protected:
 
   public:
+  /*!
+   * \brief Zmienna przechowujaca nazwe Robota
+   *
+   * Nazwa obiektu to obiekt + numer
+   */
+  std::string name;
   /*!
    * \brief Współrzędne pozycji obiektu
    *
@@ -62,6 +70,14 @@ protected:
    * \brief Zmiania współrzędne położenia obiektuxx
    */  
   void ZmienPolozenie(Wektor2D W);
+  /*!
+   * \brief Zapisuje do odpowiednich plikow Robota i jego Scieszke
+   */
+  void Update();
+  /*!
+   * \brief Zapisuje do odpowiednich plikow Robota i jego Scieszke i Rysuje
+   */
+  void Update( PzG::LaczeDoGNUPlota L);
 };
 
 

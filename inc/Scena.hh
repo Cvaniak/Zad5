@@ -54,6 +54,11 @@ public:
   /*!
    * \brief Zmienna przechowujaca wiadomosc o ilosci robotow
    *
+   */
+  int Status = 0;
+  /*!
+   * \brief Zmienna przechowujaca wiadomosc o ilosci robotow
+   *
    * Dodatkowo jest wykorzystywana posrednio do indeksowania Robotow
    * to tymczasowy sposob
    */
@@ -98,6 +103,9 @@ public:
    * Wyswietla mozliwe opcje
    */
   void Menu();
+
+  
+  void OdnowListePlikow();
 };
   
 #endif

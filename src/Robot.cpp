@@ -9,12 +9,13 @@
 #include <string>
 #include <math.h>
 #include <unistd.h>
+#include <ncurses.h>
 
 
 void Robot::Inicjalizuj()
 {
   Sciesz.InicjalizujKsztalt(_PolozenieObiektu);
-
+  
   InicjalizujKsztalt();
   
 }
@@ -293,8 +294,11 @@ bool Robot::Collision(std::vector <Przeszkoda> Przeszkody)
       double odlegloscY = abs(_PolozenieObiektu[1] - P._PolozenieObiektu[1]);
       if(odlegloscX <= promien + P.szerokosc/2  + KrokRuchu()[0] &&
 	 odlegloscY <= promien + P.wysokosc/2   + KrokRuchu()[1])
-	return 1;
+	{
+	  //printw();
+	  return 1;
+	}
     }
-      return 0;
+  return 0;
   
 }

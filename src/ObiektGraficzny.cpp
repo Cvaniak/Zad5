@@ -8,6 +8,7 @@
 
 #include <fstream>
 #include "ObiektGraficzny.hh"
+#include "lacze_do_gnuplota.hh"
 
 
 using namespace std;
@@ -48,7 +49,8 @@ void ObiektGraficzny::InicjalizujKsztalt()
 void ObiektGraficzny::ZmienPolozenie(double x, double y)
 {
   _PolozenieObiektu[0] = x;
-  _PolozenieObiektu[1] = y;  
+  _PolozenieObiektu[1] = y;
+  Update();
 }
 
 
@@ -61,7 +63,9 @@ void ObiektGraficzny::ZmienPolozenie(double x, double y)
 void ObiektGraficzny::ZmienPolozenie(Wektor2D W)
 {
   _PolozenieObiektu[0] = W[0];
-  _PolozenieObiektu[1] = W[1];  
+  _PolozenieObiektu[1] = W[1];
+  std::cout << "aaasdas" << std::endl;
+  Update();
 }
 
 
@@ -76,7 +80,7 @@ void ObiektGraficzny::ZmienPolozenie(Wektor2D W)
 bool ObiektGraficzny::ZapiszDoStrumienia(std::ostream& StrmWy) const
 {
   Wektor2D  W_glob;
-
+  
   for (Wektor2D  W_lok : _TabWierz) {
     W_glob = W_lok + _PolozenieObiektu;
     StrmWy << W_glob << endl;
@@ -107,4 +111,15 @@ bool ObiektGraficzny::ZapiszDoPliku(const char* sNazwaPliku) const
     return false;
   }
   return ZapiszDoStrumienia(StrmWy);
+}
+
+void ObiektGraficzny::Update()
+{
+  (*this).ZapiszDoPliku((*this).name.c_str());
+}
+
+void ObiektGraficzny::Update( PzG::LaczeDoGNUPlota L)
+{
+  Update();
+  L.Rysuj();
 }
