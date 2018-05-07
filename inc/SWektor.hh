@@ -72,6 +72,7 @@ class SWektor {
   SWektor<STyp,SWymiar> operator - (const SWektor<STyp,SWymiar> &Swektor) const;
   SWektor<STyp,SWymiar> operator * (double &Double)                       const;
   STyp                  operator * (SWektor<STyp,SWymiar> &Swektor)       const;
+  bool                  operator % (SWektor<STyp,SWymiar> &Swektor)       const;
   SWektor<STyp,SWymiar> operator / (double &Double)                       const;
   double                Kat        (SWektor<STyp,SWymiar> W);
   double                Dlugosc    ();
@@ -126,6 +127,17 @@ STyp SWektor<STyp,SWymiar>::operator * (SWektor<STyp,SWymiar> &Swektor) const
     Wynik = Wynik + (*this)[i]*Swektor[i];
   
   return Wynik;
+}
+
+template <typename STyp, int SWymiar>
+bool SWektor<STyp,SWymiar>::operator % (SWektor<STyp,SWymiar> &Swektor) const
+{
+  STyp k = (*this)[0]/Swektor[0];
+  
+  for (int i = 1; i < SWymiar; i++)
+    if ((k-0.001 < (*this)[i]/Swektor[i]) && (k+0.001 > (*this)[i]/Swektor[i])) return 0;
+//k != (*this)[i]/Swektor[i] || 
+  return 1;
 }
 
 

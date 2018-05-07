@@ -27,7 +27,18 @@ void Scieszka::Inicjalizuj(int x)
 
 int Scieszka::dodaj(Wektor2D& W)
 {
+  int Size = _TabWierz.size();
+  if(Size > 2)
+    {
+      Wektor2D b = _TabWierz[Size - 1];
+      Wektor2D a = _TabWierz[Size - 2];
+
+      if(a%b == a%W)
+	_TabWierz.pop_back();
+      
+    }
   _TabWierz.push_back(W);
+  
   if (!this->ZapiszDoPliku(name.c_str())) return 1;
   return 0;
 }

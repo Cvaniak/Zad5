@@ -115,6 +115,7 @@ bool ObiektGraficzny::ZapiszDoPliku(const char* sNazwaPliku) const
 
 void ObiektGraficzny::Update()
 {
+  std::cout << "asdfghjk " << (*this).name.c_str() << std::endl;
   (*this).ZapiszDoPliku((*this).name.c_str());
 }
 

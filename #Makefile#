@@ -21,8 +21,8 @@ obj/lacze_do_gnuplota.o: inc/lacze_do_gnuplota.hh src/lacze_do_gnuplota.cpp
 obj/main.o: src/main.cpp inc/ObiektGraficzny.hh inc/Robot.hh inc/Przeszkoda.hh inc/Scena.hh
 	g++ -c ${CXXFLAGS} -o obj/main.o src/main.cpp
 
-obj/ObiektGraficzny.o: src/ObiektGraficzny.cpp inc/ObiektGraficzny.hh\
-                       inc/Wektor2D.hh  inc/SWektor.hh
+obj/ObiektGraficzny.o: src/ObiektGraficzny.cpp inc/ObiektGraficzny.hh\ 
+                       inc/Wektor2D.hh  inc/SWektor.hh inc/lacze_do_gnuplota.hh
 	g++ -c ${CXXFLAGS} -o obj/ObiektGraficzny.o src/ObiektGraficzny.cpp
 
 obj/Robot.o: src/Robot.cpp inc/Robot.hh inc/Wektor2D.hh  inc/SWektor.hh inc/Scieszka.hh inc/lacze_do_gnuplota.hh
@@ -38,4 +38,4 @@ obj/Scena.o: src/Scena.cpp inc/Scena.hh inc/lacze_do_gnuplota.hh inc/Wektor2D.hh
 	g++ -c ${CXXFLAGS} -o obj/Scena.o src/Scena.cpp
 
 clean:
-	rm -f -r obj/*.o ./robot_scena obj figury/*.dat
+	rm -f -r obj/*.o ./robot_scena obj

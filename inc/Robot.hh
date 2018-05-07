@@ -27,12 +27,7 @@ protected:
    */
   int numer;
 public:
-  /*!
-   * \brief Zmienna przechowujaca nazwe Robota
-   *
-   * Nazwa robota to robot + numer
-   */
-  std::string name;
+
   /*!
    * \brief Zmienna zmieniajaca opoznienie
    */
