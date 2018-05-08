@@ -68,15 +68,17 @@ class SWektor {
   }
 
 
-  SWektor<STyp,SWymiar> operator + (const SWektor<STyp,SWymiar> &Swektor) const;
-  SWektor<STyp,SWymiar> operator - (const SWektor<STyp,SWymiar> &Swektor) const;
-  SWektor<STyp,SWymiar> operator * (double &Double)                       const;
-  STyp                  operator * (SWektor<STyp,SWymiar> &Swektor)       const;
-  bool                  operator % (SWektor<STyp,SWymiar> &Swektor)       const;
-  SWektor<STyp,SWymiar> operator / (double &Double)                       const;
-  double                Kat        (SWektor<STyp,SWymiar> W);
-  double                Dlugosc    ();
-  void                  Obrot      (double a);
+  SWektor<STyp,SWymiar> operator +  (const SWektor<STyp,SWymiar> &Swektor) const;
+  SWektor<STyp,SWymiar> operator -  (const SWektor<STyp,SWymiar> &Swektor) const;
+  SWektor<STyp,SWymiar> operator *  (double &Double)                       const;
+  STyp                  operator *  (SWektor<STyp,SWymiar> &Swektor)       const;
+  bool                  operator %  (SWektor<STyp,SWymiar> &Swektor)       const;
+  bool                  operator == (SWektor<STyp,SWymiar> &Swektor)       const;
+  bool                  operator != (SWektor<STyp,SWymiar> &Swektor)       const;
+  SWektor<STyp,SWymiar> operator /  (double &Double)                       const;
+  double                Kat         (SWektor<STyp,SWymiar> W);
+  double                Dlugosc     ();
+  void                  Obrot       (double a);
 };
 
 
@@ -138,6 +140,25 @@ bool SWektor<STyp,SWymiar>::operator % (SWektor<STyp,SWymiar> &Swektor) const
     if ((k-0.001 < (*this)[i]/Swektor[i]) && (k+0.001 > (*this)[i]/Swektor[i])) return 0;
 //k != (*this)[i]/Swektor[i] || 
   return 1;
+}
+
+template <typename STyp, int SWymiar>
+bool SWektor<STyp,SWymiar>::operator == (SWektor<STyp,SWymiar> &Swektor) const
+{ 
+  for (int i = 0; i < SWymiar; i++)
+    if ((*this)[i] != Swektor[i]) return 0;
+  //k != (*this)[i]/Swektor[i] || 
+  return 1;
+}
+
+
+template <typename STyp, int SWymiar>
+bool SWektor<STyp,SWymiar>::operator != (SWektor<STyp,SWymiar> &Swektor) const
+{ 
+  for (int i = 0; i < SWymiar; i++)
+    if ((*this)[i] != Swektor[i]) return 1;
+  //k != (*this)[i]/Swektor[i] || 
+  return 0;
 }
 
 

@@ -23,6 +23,10 @@ public:
    * \brief Indywidulana nazwa dla Scieszki
    */
   std::string name;
+  /*!
+   * \brief Ostatni Wektor zmiany
+   */
+  Wektor2D OstatniWektor = {0, 0};
   
   /*!
    * \brief Konstruktor Scieszki - nic nie robi
