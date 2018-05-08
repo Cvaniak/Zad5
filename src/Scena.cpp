@@ -27,9 +27,9 @@ int Scena::Run()
   nowyRobot(IloscRobotow++, {100, 0});
   nowaPrzeszkoda(IloscPrzeszkod++, {-200, 200}, {200, 100});
   Lacze.Rysuj();
-  //initscr();
+  initscr();
   //noecho();
-  int c;
+  endwin();
   Menu();
   cout << "sss" << endl;
   /* while(true)
@@ -195,6 +195,25 @@ void Scena::Menu()
       OdnowListePlikow();
       Lacze.Rysuj();
     }
+    if (Znak == 'o')
+    {
+      int c = 0;
+      initscr();
+      while(c != 49)
+	{
+	  noecho();
+	  c = getch();
+	  clear();
+	  printw("znaczek: %d", c);
+	  endwin();
+	  Sterowanie(c);
+	  Update();
+	  usleep(szybkoscAnimacji);
+	  usleep(10000);
+	  initscr();
+	  refresh();
+	}
+    }
 
     
 }
@@ -215,4 +234,23 @@ void Scena::OdnowListePlikow()
     }
   
   Lacze.Rysuj();  
+}
+
+void Scena::Sterowanie(int c)
+{
+  Robot &R = Roboty[0];
+  if(c == 65)
+    R.UstalPolozenie(0, R.krok_move);
+  if(c == 66)
+    R.UstalPolozenie(0, -R.krok_move);
+  if(c == 97)
+    R.UstalPolozenie(R.krok_move, 0);
+  if(c == 100)
+    R.UstalPolozenie(-R.krok_move, 0);
+  if(c == 67)
+    R.UstalPolozenie(R.krok_move, 0);
+  if(c == 68)
+    R.UstalPolozenie(-R.krok_move, 0);
+    
+    
 }

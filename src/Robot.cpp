@@ -192,19 +192,22 @@ bool Robot::Animuj(std::vector <Przeszkoda> Przeszkody, std::vector <Robot> Robo
 	(_PolozenieObiektu[1] != polozenieDocelowe[1]))
     {
       std::cout << "b" << std::endl;
-      if((abs(polozenieDocelowe[0]- _PolozenieObiektu[0])>abs(KrokRuchu()[0]))||
-	 (abs(polozenieDocelowe[1]- _PolozenieObiektu[1])>abs(KrokRuchu()[1])))
+
+     
+      if(Collision(Przeszkody) ||CollisionWithRobots(Roboty)) 
 	{
-	  //if (Collision(Przeszkody) || 
-	  if(Collision(Przeszkody) ||CollisionWithRobots(Roboty))
-	    polozenieDocelowe = _PolozenieObiektu;
-	  else
-	    _PolozenieObiektu = _PolozenieObiektu + KrokRuchu()*krok_move;
+	  polozenieDocelowe = _PolozenieObiektu;
+	  //if (Collision(Przeszkody) ||
 	}
       else
 	{
-	  _PolozenieObiektu = polozenieDocelowe;
+	  if((abs(polozenieDocelowe[0]- _PolozenieObiektu[0])>abs(KrokRuchu()[0]*krok_move))||
+	     (abs(polozenieDocelowe[1]- _PolozenieObiektu[1])>abs(KrokRuchu()[1]*krok_move)))
+	    _PolozenieObiektu = _PolozenieObiektu + KrokRuchu()*krok_move;
+	  else
+	    _PolozenieObiektu = polozenieDocelowe;
 	}
+      
       Move();
       Update();
       return 1;
@@ -311,7 +314,7 @@ bool Robot::CollisionWithRobots(std::vector <Robot> Roboty)
 	{
 	  Wektor2D W;
 	  W = R._PolozenieObiektu - _PolozenieObiektu - KrokRuchu()*krok_move;
-	  std::cout << std::endl << promien + R.promien << " zxcvb " << W.Dlugosc() << " " << numer << std::endl;
+	  //std::cout << std::endl << promien + R.promien << " zxcvb " << W.Dlugosc() << " " << numer << std::endl;
 	  if(W.Dlugosc() <= promien + R.promien )
 	    {
 	      //printw();

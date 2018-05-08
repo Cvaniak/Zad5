@@ -104,8 +104,9 @@ public:
    */
   void Menu();
 
-  
   void OdnowListePlikow();
+
+  void Sterowanie(int c);
 };
   
 #endif
