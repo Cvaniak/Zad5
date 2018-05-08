@@ -62,7 +62,7 @@ public:
    * Dodatkowo jest wykorzystywana posrednio do indeksowania Robotow
    * to tymczasowy sposob
    */
-  int szybkoscAnimacji = 75000;
+  int szybkoscAnimacji = 100000;
   /*!
    * \brief Zmienna uzywana do zmiany polozenia  
    *

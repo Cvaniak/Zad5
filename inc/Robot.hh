@@ -27,11 +27,6 @@ protected:
    */
   int numer;
 public:
-
-  /*!
-   * \brief Zmienna zmieniajaca opoznienie
-   */
-  double speed = 50000;
   /*!
    * \brief Zmienna informujaca o wielkosci robota
    */
@@ -166,7 +161,7 @@ public:
   /*!
    * \brief Obraca z animacja i przesuwa z animacja i rysuje
    */
-  bool Animuj(std::vector <Przeszkoda> Przeszkody);
+  bool Animuj(std::vector <Przeszkoda> Przeszkody, std::vector <Robot> Roboty);
   /*!
    * \brief Obraca z animacja i przesuwa z animacja i rysuje
    */
@@ -185,6 +180,8 @@ public:
   void UstalPolozenie(Wektor2D punktKoncowy);
 
   bool Collision(std::vector <Przeszkoda> Przeszkody);
+  
+  bool CollisionWithRobots(std::vector <Robot> Roboty);
 
 
   

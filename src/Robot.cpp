@@ -159,7 +159,7 @@ void Robot::Update( PzG::LaczeDoGNUPlota L)
   L.Rysuj();
 }
 
-bool Robot::Animuj(std::vector <Przeszkoda> Przeszkody)
+bool Robot::Animuj(std::vector <Przeszkoda> Przeszkody, std::vector <Robot> Roboty)
 {
   
   std::cout << std::endl << "z " << kat << " "  << katDocelowy << std::endl <<  polozenieDocelowe << std::endl ;
@@ -195,11 +195,11 @@ bool Robot::Animuj(std::vector <Przeszkoda> Przeszkody)
       if((abs(polozenieDocelowe[0]- _PolozenieObiektu[0])>abs(KrokRuchu()[0]))||
 	 (abs(polozenieDocelowe[1]- _PolozenieObiektu[1])>abs(KrokRuchu()[1])))
 	{
-	  //if
-	  if(Collision(Przeszkody))
+	  //if (Collision(Przeszkody) || 
+	  if(Collision(Przeszkody) ||CollisionWithRobots(Roboty))
 	    polozenieDocelowe = _PolozenieObiektu;
 	  else
-	    _PolozenieObiektu = _PolozenieObiektu + KrokRuchu();
+	    _PolozenieObiektu = _PolozenieObiektu + KrokRuchu()*krok_move;
 	}
       else
 	{
@@ -292,11 +292,31 @@ bool Robot::Collision(std::vector <Przeszkoda> Przeszkody)
     {
       double odlegloscX = abs(_PolozenieObiektu[0] - P._PolozenieObiektu[0]);
       double odlegloscY = abs(_PolozenieObiektu[1] - P._PolozenieObiektu[1]);
-      if(odlegloscX <= promien + P.szerokosc/2  + KrokRuchu()[0] &&
-	 odlegloscY <= promien + P.wysokosc/2   + KrokRuchu()[1])
+      if(odlegloscX <= promien + P.szerokosc/2 + KrokRuchu()[0]*krok_move &&
+	 odlegloscY <= promien + P.wysokosc/2  + KrokRuchu()[1]*krok_move)
 	{
 	  //printw();
 	  return 1;
+	}
+    }
+  return 0;
+  
+}
+
+bool Robot::CollisionWithRobots(std::vector <Robot> Roboty)
+{//                &
+  for( Robot R : Roboty)
+    {
+      if(R.name != name)
+	{
+	  Wektor2D W;
+	  W = R._PolozenieObiektu - _PolozenieObiektu - KrokRuchu()*krok_move;
+	  std::cout << std::endl << promien + R.promien << " zxcvb " << W.Dlugosc() << " " << numer << std::endl;
+	  if(W.Dlugosc() <= promien + R.promien )
+	    {
+	      //printw();
+	      return 1;
+	    }
 	}
     }
   return 0;

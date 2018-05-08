@@ -23,7 +23,8 @@ int Scena::Run()
 {
   Wektor2D Z(100,-100);
   
-  nowyRobot(IloscRobotow++, {0, 0});
+  nowyRobot(IloscRobotow++, {0, 0  });
+  nowyRobot(IloscRobotow++, {100, 0});
   nowaPrzeszkoda(IloscPrzeszkod++, {-200, 200}, {200, 100});
   Lacze.Rysuj();
   //initscr();
@@ -77,7 +78,7 @@ void Scena::Update()
   Status = 0;
   for(Robot &R : Roboty)
     {
-      Status += R.Animuj(Przeszkody);
+      Status += R.Animuj(Przeszkody, Roboty);
     }
   Lacze.Rysuj();  
 }
@@ -183,7 +184,7 @@ void Scena::Menu()
       
       cout << "Podaj numer przeszkody" << endl;
       cin >> i;
-      //Lacze.DodajNazwePliku(Przeszkody[i].name.c_str(),PzG::RR_Ciagly,5);
+      Lacze.DodajNazwePliku(Przeszkody[i].name.c_str(),PzG::RR_Ciagly,5);
       Lacze.Rysuj();
       cout << "Nowe Polozenie:  " << endl;
       cin >> b;
