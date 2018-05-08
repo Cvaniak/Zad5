@@ -173,7 +173,7 @@ public:
   /*!
    * \brief Skaluje do danej wielkosci
    */
-  void UstalPolozenie(double zmianaKata, double zmianaPolozenia, int typ = 0);
+  void UstalPolozenie(double zmianaKata, double zmianaPolozenia, int typ);
   /*!
    * \brief Skaluje do danej wielkosci
    */

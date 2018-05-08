@@ -240,17 +240,17 @@ void Scena::Sterowanie(int c)
 {
   Robot &R = Roboty[0];
   if(c == 65)
-    R.UstalPolozenie(0, R.krok_move);
+    R.UstalPolozenie(0, R.krok_move, 1);
   if(c == 66)
-    R.UstalPolozenie(0, -R.krok_move);
-  if(c == 97)
-    R.UstalPolozenie(R.krok_move, 0);
-  if(c == 100)
-    R.UstalPolozenie(-R.krok_move, 0);
+    R.UstalPolozenie(180, R.krok_move, 1);
   if(c == 67)
-    R.UstalPolozenie(R.krok_move, 0);
+    R.UstalPolozenie(-90, R.krok_move, 1);
   if(c == 68)
-    R.UstalPolozenie(-R.krok_move, 0);
+    R.UstalPolozenie(90, R.krok_move, 1);
+  if(c == 97)
+    R.UstalPolozenie(R.krok_move, 0, 0);
+  if(c == 100)
+    R.UstalPolozenie(-R.krok_move, 0, 0);
     
     
 }

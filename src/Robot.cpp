@@ -265,7 +265,7 @@ void Robot::Skaluj(double s)
 }
 
 
-void Robot::UstalPolozenie(double zmianaKata, double zmianaPolozenia)
+void Robot::UstalPolozenie(double zmianaKata, double zmianaPolozenia, int typ)
 {
   //std::cout << std::endl << fmod(zmianaKata, 360.0) << std::endl;
   zmianaKata = fmod(zmianaKata, 360.0);
@@ -275,6 +275,8 @@ void Robot::UstalPolozenie(double zmianaKata, double zmianaPolozenia)
   if(katDocelowy < 0)
     katDocelowy = 360.0 + katDocelowy;
   std::cout << std::endl << KrokRuchu(katDocelowy) << std::endl;
+  if(typ == 1)
+    kat = katDocelowy;
   
   polozenieDocelowe = _PolozenieObiektu + KrokRuchu(katDocelowy)*zmianaPolozenia;
   
