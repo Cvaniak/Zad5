@@ -50,7 +50,7 @@ public:
   /*!
    * \brief jednostka ruchu do przodu
    */
-  double krok_move = 3;
+  double krok_move = 50;
   /*!
    * \brief jednostka ruchu katowego
    */

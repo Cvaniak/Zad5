@@ -8,10 +8,6 @@
 
 void Przeszkoda::Inicjalizuj(Wektor2D LG, Wektor2D PD)
 {
-  szerokosc = PD[0] - LG[0];
-  wysokosc  = LG[1] - PD[1];
-  _PolozenieObiektu = {LG[0]+szerokosc/2,PD[1]+wysokosc/2};
-  InicjalizujKsztalt();
 }
 
 void Przeszkoda::InicjalizujKsztalt()

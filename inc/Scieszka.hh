@@ -50,7 +50,7 @@ public:
   /*!
    * \brief dodaje punkt do Scieszki
    */
-  int dodaj(Wektor2D&);
+  int dodaj(Wektor2D&, Wektor2D);
   /*!
    * \brief Zwraca nazwe scieszki
    */

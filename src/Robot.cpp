@@ -51,13 +51,13 @@ void Robot::ZmienPolozenie(double x, double y)
 {
   _PolozenieObiektu[0] = x;
   _PolozenieObiektu[1] = y;
-  Sciesz.dodaj(_PolozenieObiektu);
+  Sciesz.dodaj(_PolozenieObiektu, KrokRuchu());
 }
 
 void Robot::ZmienPolozenie(Wektor2D W)
 {
   _PolozenieObiektu = W;
-  Sciesz.dodaj(_PolozenieObiektu);
+  Sciesz.dodaj( _PolozenieObiektu, KrokRuchu());
 }
 
 void Robot::Obrot()

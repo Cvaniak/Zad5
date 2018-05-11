@@ -25,7 +25,7 @@ void Scieszka::Inicjalizuj(int x)
   
 }
 
-int Scieszka::dodaj(Wektor2D& W)
+int Scieszka::dodaj(Wektor2D& Polozenie, Wektor2D W)
 {
   int Size = _TabWierz.size();
   if(Size > 2 && OstatniWektor % W)
@@ -34,7 +34,7 @@ int Scieszka::dodaj(Wektor2D& W)
       
     }
   OstatniWektor = W;
-  _TabWierz.push_back(W);
+  _TabWierz.push_back(Polozenie);
 
   if (!this->ZapiszDoPliku(name.c_str())) return 1;
   return 0;

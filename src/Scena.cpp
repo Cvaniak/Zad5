@@ -90,6 +90,8 @@ void Scena::Menu()
   cout << "s - skaluj do rozmiaru " << endl;
   cout << "l - podaj obrot i ile naprzod " << endl;
   cout << "v - podaj kordynaty " << endl;
+  cout << "jeszcze o u q " << endl;
+  
   //cin >> noskipws >> Znak;
 
   cin >> Znak;
