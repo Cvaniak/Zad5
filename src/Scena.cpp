@@ -30,7 +30,7 @@ int Scena::Run()
   initscr();
   endwin();
   Menu();
-  while(true)
+  while(Status != 2)
     {
       Update();
       usleep(szybkoscAnimacji);
@@ -215,6 +215,10 @@ void Scena::Menu()
 	{
 	  cout << obiekt.name << endl;
 	}
+    }
+    if (Znak == 'q')
+    {
+      Status = 2;
     }
 
     

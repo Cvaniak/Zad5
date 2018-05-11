@@ -193,7 +193,7 @@ bool Robot::Animuj(std::vector <Przeszkoda> Przeszkody, std::vector <Robot> Robo
       //std::cout << "b" << std::endl;
 
      
-      if(Collision(Przeszkody) ||CollisionWithRobots(Roboty)) 
+      if(Collision(Przeszkody) || CollisionWithRobots(Roboty)) 
 	{
 	  polozenieDocelowe = _PolozenieObiektu;
 	  //if (Collision(Przeszkody) ||

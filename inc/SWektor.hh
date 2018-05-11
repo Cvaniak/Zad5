@@ -221,7 +221,7 @@ double SWektor<STyp,SWymiar>::Kat(SWektor<STyp,SWymiar> W)
   wynik3 = wynik1 / wynik2;
   //if (abs) 
   wynik = (acos(wynik3)-M_PI/2) * 180.0 / M_PI;
-  std::cout << wynik << std::endl;
+  //std::cout << wynik << std::endl;
   //(*this).Dlugosc() << " " << W.Dlugosc() << " " << wynik1 << " " << wynik2 << " " <<
   
   if(W[1] < 0)

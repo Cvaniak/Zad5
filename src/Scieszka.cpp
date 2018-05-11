@@ -28,7 +28,7 @@ void Scieszka::Inicjalizuj(int x)
 int Scieszka::dodaj(Wektor2D& W)
 {
   int Size = _TabWierz.size();
-  if(Size > 2 && OstatniWektor == W)
+  if(Size > 2 && OstatniWektor % W)
     {
 	_TabWierz.pop_back();
       
