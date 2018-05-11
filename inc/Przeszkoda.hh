@@ -41,22 +41,25 @@ public:
    *
    * Nadaje mu nazwe, inicjalizuje scieszke, Inicjalizuje krztalt
    */
-  Przeszkoda(int i, Wektor2D LG, Wektor2D PD)
+  Przeszkoda(int i, Wektor2D Polozenie, double Szerokosc, double Wysokosc)
   {
     std::string   a = "figury/";
     std::string   b = "przeszkoda";
     std::string   c = std::to_string(i);
     std::string   d = ".dat";
     name = a + b + c + d;
-
     
     
-    Inicjalizuj(LG, PD);
+    
+    szerokosc = Szerokosc;
+    wysokosc  = Wysokosc;
+    _PolozenieObiektu = Polozenie;
+    InicjalizujKsztalt();
   }
   /*!
    * \brief Metoda incjacji krztaltu Robota
    */
-  void InicjalizujKsztalt(Wektor2D LG, Wektor2D PD);
+  void InicjalizujKsztalt();
   /*!
    * \brief Metoda wywolujoca Inicjalizacje krztaltu robota i scieszki
    */

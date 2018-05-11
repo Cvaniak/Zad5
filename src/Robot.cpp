@@ -162,7 +162,6 @@ void Robot::Update( PzG::LaczeDoGNUPlota L)
 bool Robot::Animuj(std::vector <Przeszkoda> Przeszkody, std::vector <Robot> Roboty)
 {
   
-  std::cout << std::endl << "z " << kat << " "  << katDocelowy << std::endl <<  polozenieDocelowe << std::endl ;
   if( kat >= 360)
     kat -= 360;
   if( kat < 0 )
@@ -170,7 +169,7 @@ bool Robot::Animuj(std::vector <Przeszkoda> Przeszkody, std::vector <Robot> Robo
   
   if(kat != katDocelowy)
     {
-      std::cout << "a" << std::endl;
+      // std::cout << "a" << std::endl;
       if((abs(katDocelowy - kat) < krok_kat) || (abs(katDocelowy - kat) > 360 - krok_kat))
 	{
 	  kat = katDocelowy;
@@ -191,7 +190,7 @@ bool Robot::Animuj(std::vector <Przeszkoda> Przeszkody, std::vector <Robot> Robo
   else if((_PolozenieObiektu[0] != polozenieDocelowe[0])||
 	(_PolozenieObiektu[1] != polozenieDocelowe[1]))
     {
-      std::cout << "b" << std::endl;
+      //std::cout << "b" << std::endl;
 
      
       if(Collision(Przeszkody) ||CollisionWithRobots(Roboty)) 
@@ -274,7 +273,7 @@ void Robot::UstalPolozenie(double zmianaKata, double zmianaPolozenia, int typ)
   katDocelowy = fmod((kat + zmianaKata), 360.0);
   if(katDocelowy < 0)
     katDocelowy = 360.0 + katDocelowy;
-  std::cout << std::endl << KrokRuchu(katDocelowy) << std::endl;
+  //std::cout << std::endl << KrokRuchu(katDocelowy) << std::endl;
   if(typ == 1)
     kat = katDocelowy;
   

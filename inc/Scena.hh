@@ -6,6 +6,8 @@
 #include "Robot.hh"
 #include "Przeszkoda.hh"
 #include <vector>
+#include <list>
+#include <memory>
 
   /*!
    * \brief Klasa odpowiedzialna za dzialanie programu
@@ -22,6 +24,7 @@ public:
    *
    * Przechowuje stworzone roboty
    * 
+  std::list<std::shared_ptr <Robot>> Roboty;
    */
   std::vector <Robot> Roboty;
     /*!
@@ -31,6 +34,7 @@ public:
    * 
    */
   std::vector <Przeszkoda> Przeszkody;
+  std::list<ObiektGraficzny> listaObiektow;
   /*!
    * \brief Lacze do Gnuplota
    *
@@ -90,7 +94,7 @@ public:
    *
    * Tworzy rowniez odpowiednie lacze z Gnuplotem
    */
-  int nowaPrzeszkoda(int x, Wektor2D LG, Wektor2D PD);
+  int nowaPrzeszkoda(int x, Wektor2D Polozenie, double Szerokosc, double Wysokosc);
   /*!
    * \brief Nic nie robi narazie
    *

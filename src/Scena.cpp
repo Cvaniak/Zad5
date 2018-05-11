@@ -25,22 +25,11 @@ int Scena::Run()
   
   nowyRobot(IloscRobotow++, {0, 0  });
   nowyRobot(IloscRobotow++, {100, 0});
-  nowaPrzeszkoda(IloscPrzeszkod++, {-200, 200}, {200, 100});
+  nowaPrzeszkoda(IloscPrzeszkod++, {-200, 200}, 200, 100);
   Lacze.Rysuj();
   initscr();
-  //noecho();
   endwin();
   Menu();
-  cout << "sss" << endl;
-  /* while(true)
-    {
-      initscr();
-      noecho();
-      c = getch();
-      clear();
-      printw("znaczek: %d", c);
-      refresh();
-      }*/
   while(true)
     {
       Update();
@@ -58,16 +47,19 @@ int Scena::nowyRobot(int x, Wektor2D W)
   Lacze.DodajNazwePliku(R.Sciesz.name.c_str(),PzG::RR_Ciagly,2);
   if (!R.ZapiszDoPliku(R.name.c_str())) return 1;
   if (!R.Sciesz.ZapiszDoPliku(R.Sciesz.name.c_str())) return 1;
+  listaObiektow.push_back(R);
   Roboty.push_back(R);
+  //  Roboty.push_back(std::make_shared<Robot>( R));
   
   return 0;
 }
 
-int Scena::nowaPrzeszkoda(int x, Wektor2D LG, Wektor2D PD)
+int Scena::nowaPrzeszkoda(int x,  Wektor2D Polozenie, double Szerokosc, double Wysokosc)
 {
-  Przeszkoda P(x, LG, PD);
+  Przeszkoda P(x, Polozenie, Szerokosc, Wysokosc);
   Lacze.DodajNazwePliku(P.name.c_str(),PzG::RR_Ciagly,2);
   if (!P.ZapiszDoPliku(P.name.c_str())) return 1;
+  listaObiektow.push_back(P);
   Przeszkody.push_back(P);
   
   return 0;
@@ -139,14 +131,17 @@ void Scena::Menu()
   
   if (Znak == 'p')
     {
-      Wektor2D LG, PD;
+      Wektor2D P;
+      double s, w;
       
-      cout << "LG: " << endl;
-      cin >> LG;
-      cout << "PD: " << endl;
-      cin >> PD;
+      cout << "Polozenie: " << endl;
+      cin >> P;
+      cout << "szerokosc: " << endl;
+      cin >> s;
+      cout << "wysokosc: " << endl;
+      cin >> w;
  
-      nowaPrzeszkoda(IloscPrzeszkod++, LG, PD);
+      nowaPrzeszkoda(IloscPrzeszkod++, P, s, w);
       Lacze.Rysuj();      
     }
   
@@ -204,14 +199,21 @@ void Scena::Menu()
 	  noecho();
 	  c = getch();
 	  clear();
-	  printw("znaczek: %d", c);
-	  endwin();
+	  //printw("znaczek: %d", c);
+	  //endwin();
 	  Sterowanie(c);
 	  Update();
-	  usleep(szybkoscAnimacji);
-	  usleep(10000);
-	  initscr();
-	  refresh();
+	  usleep(40000);
+	  //initscr();
+	  //refresh();
+	}
+      endwin();
+    }
+    if (Znak == 'u')
+    {
+      for( ObiektGraficzny obiekt : listaObiektow)
+	{
+	  cout << obiekt.name << endl;
 	}
     }
 
@@ -248,9 +250,9 @@ void Scena::Sterowanie(int c)
   if(c == 68)
     R.UstalPolozenie(90, R.krok_move, 1);
   if(c == 97)
-    R.UstalPolozenie(R.krok_move, 0, 0);
+    R.UstalPolozenie(R.krok_move, 0);
   if(c == 100)
-    R.UstalPolozenie(-R.krok_move, 0, 0);
+    R.UstalPolozenie(-R.krok_move, 0);
     
     
 }
