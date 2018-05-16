@@ -291,7 +291,8 @@ void Robot::UstalPolozenie(Wektor2D punktKoncowy)
 }
     
 bool Robot::Collision(std::vector <Przeszkoda> Przeszkody)
-{//                &
+{
+  /*//                &
   for( Przeszkoda P : Przeszkody)
     {
       double odlegloscX = abs(_PolozenieObiektu[0] - P._PolozenieObiektu[0]);
@@ -304,11 +305,30 @@ bool Robot::Collision(std::vector <Przeszkoda> Przeszkody)
 	}
     }
   return 0;
+  */
   
+  for( Przeszkoda P : Przeszkody)
+    {
+      double distance_x = abs(_PolozenieObiektu[0] - P._PolozenieObiektu[0]);
+      double distance_y = abs(_PolozenieObiektu[1] - P._PolozenieObiektu[1]);
+      if (distance_x > (P.szerokosc/2 + promien)) { return false; }
+      if (distance_y > (P.wysokosc/2 + promien))  { return false; }
+      if (distance_x <= (P.szerokosc/2)) { return true; } 
+      if (distance_y <= (P.wysokosc/2))  { return true; }
+      double cDist_sq = (distance_x - pow(P.szerokosc/2, 2)) + (distance_y - pow(P.wysokosc/2, 2));
+      if(cDist_sq <= pow(promien, 2))
+	{
+	  //Wektor2D a = KrokRuchu()*pow(promien, 2)
+	  return 1;
+	}
+    }
+  
+  return 0;  
 }
 
 bool Robot::CollisionWithRobots(std::vector <Robot> Roboty)
-{//                &
+{
+  //                &
   for( Robot R : Roboty)
     {
       if(R.name != name)
