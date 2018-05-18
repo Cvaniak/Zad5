@@ -11,6 +11,7 @@
 #include "Scieszka.hh"
 #include <typeinfo> 
 #include <string>
+#include <memory>
 
 
 
@@ -161,7 +162,7 @@ public:
   /*!
    * \brief Obraca z animacja i przesuwa z animacja i rysuje
    */
-  bool Animuj(std::vector <Przeszkoda> Przeszkody, std::vector <Robot> Roboty);
+  bool Animuj(std::vector <std::shared_ptr <Przeszkoda>> Przeszkody, std::vector <std::shared_ptr <Robot>> Roboty);
   /*!
    * \brief Obraca z animacja i przesuwa z animacja i rysuje
    */
@@ -179,10 +180,11 @@ public:
    */
   void UstalPolozenie(Wektor2D punktKoncowy);
 
-  bool Collision(std::vector <Przeszkoda> Przeszkody);
+  bool Collision(std::vector <std::shared_ptr <Przeszkoda>> Przeszkody);
   
-  bool CollisionWithRobots(std::vector <Robot> Roboty);
-
+  bool CollisionWithRobots(std::vector <std::shared_ptr <Robot>> Roboty);
+  
+  //void Kolizja(ObiektGraficzny OB);
 
   
 };

@@ -13,6 +13,8 @@
 #include <time.h>
 #include <unistd.h>
 #include <linux/input.h>
+#include <memory>
+
 
 #include <ncurses.h>
 
@@ -23,9 +25,14 @@ int Scena::Run()
 {
   Wektor2D Z(100,-100);
   
+  nowaPrzeszkoda(IloscPrzeszkod++, {-200, 200}, 200, 100);
   nowyRobot(IloscRobotow++, {0, 0  });
   nowyRobot(IloscRobotow++, {100, 0});
-  nowaPrzeszkoda(IloscPrzeszkod++, {-200, 200}, 200, 100);
+  
+  //Robot Z1(20, {2, 2}); 
+  //Lacze.DodajNazwePliku(Z1.name.c_str(),PzG::RR_Ciagly,2);
+  //if (!Z1.ZapiszDoPliku(Z1.name.c_str())) return 1;
+
   Lacze.Rysuj();
   initscr();
   endwin();
@@ -42,35 +49,44 @@ int Scena::Run()
 
 int Scena::nowyRobot(int x, Wektor2D W)
 {
-  Robot R(x, W);
-  Lacze.DodajNazwePliku(R.name.c_str(),PzG::RR_Ciagly,2);
-  Lacze.DodajNazwePliku(R.Sciesz.name.c_str(),PzG::RR_Ciagly,2);
-  if (!R.ZapiszDoPliku(R.name.c_str())) return 1;
-  if (!R.Sciesz.ZapiszDoPliku(R.Sciesz.name.c_str())) return 1;
-  listaObiektow.push_back(R);
+  std::shared_ptr<ObiektGraficzny> Ob;
+  std::shared_ptr<Robot> R;
+  R = std::make_shared<Robot>(x, W);
+  Ob = std::dynamic_pointer_cast<ObiektGraficzny>(R);// = new
+ 
+  Lacze.DodajNazwePliku(R->name.c_str(),PzG::RR_Ciagly,2);
+  Lacze.DodajNazwePliku(R->Sciesz.name.c_str(),PzG::RR_Ciagly,2);
+  if (!R->ZapiszDoPliku(R->name.c_str())) return 1;
+  if (!R->Sciesz.ZapiszDoPliku(R->Sciesz.name.c_str())) return 1;
+  
+  //ObiektGraficzny O = R;
+  listaObiektow.push_back(Ob);
   Roboty.push_back(R);
   //  Roboty.push_back(std::make_shared<Robot>( R));
   
+   
   return 0;
 }
 
 int Scena::nowaPrzeszkoda(int x,  Wektor2D Polozenie, double Szerokosc, double Wysokosc)
 {
-  Przeszkoda P(x, Polozenie, Szerokosc, Wysokosc);
-  Lacze.DodajNazwePliku(P.name.c_str(),PzG::RR_Ciagly,2);
-  if (!P.ZapiszDoPliku(P.name.c_str())) return 1;
-  listaObiektow.push_back(P);
+  std::shared_ptr<ObiektGraficzny> Ob;
+  std::shared_ptr<Przeszkoda> P;
+  P = std::make_shared<Przeszkoda>(x, Polozenie, Szerokosc, Wysokosc);
+  Ob = std::dynamic_pointer_cast<ObiektGraficzny>(P);
+  Lacze.DodajNazwePliku(P->name.c_str(),PzG::RR_Ciagly,2);
+  if (!P->ZapiszDoPliku(P->name.c_str())) return 1;
+  listaObiektow.push_back(Ob);
   Przeszkody.push_back(P);
-  
   return 0;
 }
 
 void Scena::Update()
 {
   Status = 0;
-  for(Robot &R : Roboty)
+  for(std::shared_ptr <Robot> &R : Roboty)
     {
-      Status += R.Animuj(Przeszkody, Roboty);
+      Status += R->Animuj(Przeszkody, Roboty);
     }
   Lacze.Rysuj();  
 }
@@ -110,8 +126,8 @@ void Scena::Menu()
       cin >> j;
       cout << "Podaj nowy rozmiar X.Y" << endl;
       cin >> s;
-      Roboty[j].Skaluj(s);
-      Roboty[j].Update(Lacze);
+      Roboty[j]->Skaluj(s);
+      Roboty[j]->Update(Lacze);
     }
   if (Znak == 'f')
     {
@@ -126,8 +142,8 @@ void Scena::Menu()
       cin >> a;
       cout << "Podaj skok ruchu" << endl;
       cin >> b;
-      Roboty[j].krok_kat = a;
-      Roboty[j].krok_move = b;
+      Roboty[j]->krok_kat = a;
+      Roboty[j]->krok_move = b;
       }
   // cin >> NowePolozenie;
   
@@ -160,7 +176,7 @@ void Scena::Menu()
       cout << "ile naprzod: " << endl;
       cin >> b;
 
-      Roboty[i].UstalPolozenie(a, b);
+      Roboty[i]->UstalPolozenie(a, b);
     }
     if (Znak == 'v')
     {
@@ -172,7 +188,7 @@ void Scena::Menu()
       cout << "kordynaty: " << endl;
       cin >> a;
 
-      Roboty[i].UstalPolozenie(a);
+      Roboty[i]->UstalPolozenie(a);
     }
     if (Znak == 'z')
     {
@@ -181,13 +197,13 @@ void Scena::Menu()
       
       cout << "Podaj numer przeszkody" << endl;
       cin >> i;
-      Lacze.DodajNazwePliku(Przeszkody[i].name.c_str(),PzG::RR_Ciagly,5);
+      Lacze.DodajNazwePliku(Przeszkody[i]->name.c_str(),PzG::RR_Ciagly,5);
       Lacze.Rysuj();
       cout << "Nowe Polozenie:  " << endl;
       cin >> b;
 
-      Przeszkody[i].ZmienPolozenie(b);
-      cout << "Nowe Polozenie:  " << Przeszkody[i]._PolozenieObiektu << endl;
+      Przeszkody[i]->ZmienPolozenie(b);
+      cout << "Nowe Polozenie:  " << Przeszkody[i]->_PolozenieObiektu << endl;
       
       OdnowListePlikow();
       Lacze.Rysuj();
@@ -213,9 +229,9 @@ void Scena::Menu()
     }
     if (Znak == 'u')
     {
-      for( ObiektGraficzny obiekt : listaObiektow)
+      for( std::shared_ptr <ObiektGraficzny> obiekt : listaObiektow)
 	{
-	  cout << obiekt.name << endl;
+	  cout << obiekt->name << endl;
 	}
     }
     if (Znak == 'q')
@@ -230,15 +246,15 @@ void Scena::Menu()
 void Scena::OdnowListePlikow()
 {
   Lacze.UsunWszystkieNazwyPlikow();
-  for(Robot &R : Roboty)
+  for(std::shared_ptr <Robot> &R : Roboty)
     { 
-      Lacze.DodajNazwePliku(R.name.c_str(),PzG::RR_Ciagly,2);
-      Lacze.DodajNazwePliku(R.Sciesz.name.c_str(),PzG::RR_Ciagly,2);
+      Lacze.DodajNazwePliku(R->name.c_str(),PzG::RR_Ciagly,2);
+      Lacze.DodajNazwePliku(R->Sciesz.name.c_str(),PzG::RR_Ciagly,2);
     }
   
-  for(Przeszkoda &P : Przeszkody)
+  for(std::shared_ptr <Przeszkoda>  &P : Przeszkody)
     {
-      Lacze.DodajNazwePliku(P.name.c_str(),PzG::RR_Ciagly,2);
+      Lacze.DodajNazwePliku(P->name.c_str(),PzG::RR_Ciagly,2);
     }
   
   Lacze.Rysuj();  
@@ -246,19 +262,19 @@ void Scena::OdnowListePlikow()
 
 void Scena::Sterowanie(int c)
 {
-  Robot &R = Roboty[0];
+  std::shared_ptr <Robot> &R = Roboty[0];
   if(c == 65)
-    R.UstalPolozenie(0, R.krok_move, 1);
+    R->UstalPolozenie(0, R->krok_move, 1);
   if(c == 66)
-    R.UstalPolozenie(180, R.krok_move, 1);
+    R->UstalPolozenie(180, R->krok_move, 1);
   if(c == 67)
-    R.UstalPolozenie(-90, R.krok_move, 1);
+    R->UstalPolozenie(-90, R->krok_move, 1);
   if(c == 68)
-    R.UstalPolozenie(90, R.krok_move, 1);
+    R->UstalPolozenie(90, R->krok_move, 1);
   if(c == 97)
-    R.UstalPolozenie(R.krok_move, 0);
+    R->UstalPolozenie(R->krok_move, 0);
   if(c == 100)
-    R.UstalPolozenie(-R.krok_move, 0);
+    R->UstalPolozenie(-R->krok_move, 0);
     
     
 }

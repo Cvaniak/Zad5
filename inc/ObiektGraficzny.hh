@@ -78,6 +78,8 @@ protected:
    * \brief Zapisuje do odpowiednich plikow Robota i jego Scieszke i Rysuje
    */
   void Update( PzG::LaczeDoGNUPlota L);
+  
+  virtual void Kolizja(ObiektGraficzny OB){}
 };
 
 

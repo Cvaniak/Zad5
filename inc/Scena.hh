@@ -26,15 +26,15 @@ public:
    * 
   std::list<std::shared_ptr <Robot>> Roboty;
    */
-  std::vector <Robot> Roboty;
+  std::vector <std::shared_ptr <Robot>> Roboty;
     /*!
    * \brief Tablica dynamiczna przechowujaca Roboty
    *
    * Przechowuje stworzone roboty
    * 
    */
-  std::vector <Przeszkoda> Przeszkody;
-  std::list<ObiektGraficzny> listaObiektow;
+  std::vector <std::shared_ptr<Przeszkoda>> Przeszkody;
+  std::list<std::shared_ptr <ObiektGraficzny>> listaObiektow;
   /*!
    * \brief Lacze do Gnuplota
    *

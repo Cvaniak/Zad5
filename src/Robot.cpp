@@ -10,6 +10,7 @@
 #include <math.h>
 #include <unistd.h>
 #include <ncurses.h>
+#include <memory>
 
 
 void Robot::Inicjalizuj()
@@ -159,7 +160,7 @@ void Robot::Update( PzG::LaczeDoGNUPlota L)
   L.Rysuj();
 }
 
-bool Robot::Animuj(std::vector <Przeszkoda> Przeszkody, std::vector <Robot> Roboty)
+bool Robot::Animuj(std::vector <std::shared_ptr<Przeszkoda>> Przeszkody, std::vector <std::shared_ptr <Robot>> Roboty)
 {
   
   if( kat >= 360)
@@ -192,7 +193,7 @@ bool Robot::Animuj(std::vector <Przeszkoda> Przeszkody, std::vector <Robot> Robo
     {
       //std::cout << "b" << std::endl;
 
-     
+
       if(Collision(Przeszkody) || CollisionWithRobots(Roboty)) 
 	{
 	  polozenieDocelowe = _PolozenieObiektu;
@@ -290,7 +291,7 @@ void Robot::UstalPolozenie(Wektor2D punktKoncowy)
   polozenieDocelowe = punktKoncowy;
 }
     
-bool Robot::Collision(std::vector <Przeszkoda> Przeszkody)
+bool Robot::Collision(std::vector <std::shared_ptr <Przeszkoda>> Przeszkody)
 {
   /*//                &
   for( Przeszkoda P : Przeszkody)
@@ -307,15 +308,17 @@ bool Robot::Collision(std::vector <Przeszkoda> Przeszkody)
   return 0;
   */
   
-  for( Przeszkoda P : Przeszkody)
+  std::cout << "ssss "<< Przeszkody.size()<< std::endl;
+  for(std::shared_ptr <Przeszkoda> P : Przeszkody)
     {
-      double distance_x = abs(_PolozenieObiektu[0] - P._PolozenieObiektu[0]);
-      double distance_y = abs(_PolozenieObiektu[1] - P._PolozenieObiektu[1]);
-      if (distance_x > (P.szerokosc/2 + promien)) { return false; }
-      if (distance_y > (P.wysokosc/2 + promien))  { return false; }
-      if (distance_x <= (P.szerokosc/2)) { return true; } 
-      if (distance_y <= (P.wysokosc/2))  { return true; }
-      double cDist_sq = (distance_x - pow(P.szerokosc/2, 2)) + (distance_y - pow(P.wysokosc/2, 2));
+      std::cout << "ssss1 "<< std::endl;
+      double distance_x = abs(_PolozenieObiektu[0] - P->_PolozenieObiektu[0]);
+      double distance_y = abs(_PolozenieObiektu[1] - P->_PolozenieObiektu[1]);
+      if (distance_x > (P->szerokosc/2 + promien)) { return false; }
+      if (distance_y > (P->wysokosc/2 + promien))  { return false; }
+      if (distance_x <= (P->szerokosc/2)) { return true; } 
+      if (distance_y <= (P->wysokosc/2))  { return true; }
+      double cDist_sq = (distance_x - pow(P->szerokosc/2, 2)) + (distance_y - pow(P->wysokosc/2, 2));
       if(cDist_sq <= pow(promien, 2))
 	{
 	  //Wektor2D a = KrokRuchu()*pow(promien, 2)
@@ -326,17 +329,17 @@ bool Robot::Collision(std::vector <Przeszkoda> Przeszkody)
   return 0;  
 }
 
-bool Robot::CollisionWithRobots(std::vector <Robot> Roboty)
+bool Robot::CollisionWithRobots(std::vector <std::shared_ptr <Robot>> Roboty)
 {
   //                &
-  for( Robot R : Roboty)
+  for( std::shared_ptr <Robot> R : Roboty)
     {
-      if(R.name != name)
+      if(R->name != name)
 	{
 	  Wektor2D W;
-	  W = R._PolozenieObiektu - _PolozenieObiektu - KrokRuchu()*krok_move;
+	  W = R->_PolozenieObiektu - _PolozenieObiektu - KrokRuchu()*krok_move;
 	  //std::cout << std::endl << promien + R.promien << " zxcvb " << W.Dlugosc() << " " << numer << std::endl;
-	  if(W.Dlugosc() <= promien + R.promien )
+	  if(W.Dlugosc() <= promien + R->promien )
 	    {
 	      //printw();
 	      return 1;
@@ -346,3 +349,8 @@ bool Robot::CollisionWithRobots(std::vector <Robot> Roboty)
   return 0;
   
 }
+
+
+//void Robot::Kolizja(ObiektGraficzny OB)
+//{
+//}

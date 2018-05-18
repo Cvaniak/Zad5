@@ -32,3 +32,8 @@ void Przeszkoda::InicjalizujKsztalt()
   _TabWierz[5][0] =   0;  _TabWierz[5][1]=  30;
   _TabWierz[6][0] =  30;  _TabWierz[6][1]=   0;*/
 }
+
+
+//void Przeszkoda::Kolizja(ObiektGraficzny OB)
+//{
+//}

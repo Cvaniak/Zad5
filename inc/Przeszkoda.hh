@@ -64,6 +64,8 @@ public:
    * \brief Metoda wywolujoca Inicjalizacje krztaltu robota i scieszki
    */
   void Inicjalizuj(Wektor2D LG, Wektor2D PD);
+
+  //void Kolizja(ObiektGraficzny OB);
 };
 
 #endif
