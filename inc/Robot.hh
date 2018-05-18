@@ -162,7 +162,7 @@ public:
   /*!
    * \brief Obraca z animacja i przesuwa z animacja i rysuje
    */
-  bool Animuj(std::vector <std::shared_ptr <Przeszkoda>> Przeszkody, std::vector <std::shared_ptr <Robot>> Roboty);
+  bool Animuj(std::vector <std::shared_ptr <Przeszkoda>> Przeszkody, std::vector <std::shared_ptr <Robot>> Roboty, std::list<std::shared_ptr <ObiektGraficzny>> listaObiektow);
   /*!
    * \brief Obraca z animacja i przesuwa z animacja i rysuje
    */

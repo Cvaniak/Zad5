@@ -86,7 +86,7 @@ void Scena::Update()
   Status = 0;
   for(std::shared_ptr <Robot> &R : Roboty)
     {
-      Status += R->Animuj(Przeszkody, Roboty);
+      Status += R->Animuj(Przeszkody, Roboty, listaObiektow);
     }
   Lacze.Rysuj();  
 }

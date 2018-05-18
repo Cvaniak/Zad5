@@ -160,7 +160,7 @@ void Robot::Update( PzG::LaczeDoGNUPlota L)
   L.Rysuj();
 }
 
-bool Robot::Animuj(std::vector <std::shared_ptr<Przeszkoda>> Przeszkody, std::vector <std::shared_ptr <Robot>> Roboty)
+bool Robot::Animuj(std::vector <std::shared_ptr<Przeszkoda>> Przeszkody, std::vector <std::shared_ptr <Robot>> Roboty, std::list<std::shared_ptr <ObiektGraficzny>> listaObiektow)
 {
   
   if( kat >= 360)
@@ -193,7 +193,11 @@ bool Robot::Animuj(std::vector <std::shared_ptr<Przeszkoda>> Przeszkody, std::ve
     {
       //std::cout << "b" << std::endl;
 
-
+      for(std::shared_ptr <ObiektGraficzny> O : listaObiektow)
+	{
+	  O->Kolizja(*this);
+	  std::cout << O->name << std::endl;
+	}
       if(Collision(Przeszkody) || CollisionWithRobots(Roboty)) 
 	{
 	  polozenieDocelowe = _PolozenieObiektu;
